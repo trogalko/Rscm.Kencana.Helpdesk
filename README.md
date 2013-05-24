@@ -1,2 +1,2 @@
-Rscm.Kencana.Helpdesk
+A very simple helpdesk application
 =====================
