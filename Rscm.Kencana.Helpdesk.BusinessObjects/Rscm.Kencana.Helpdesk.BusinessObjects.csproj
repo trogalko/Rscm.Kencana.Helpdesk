@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6621C813-A2F2-4380-BBE4-6EE5731AE82F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Rscm.Kencana.Helpdesk.BusinessObjects</RootNamespace>
+    <AssemblyName>Rscm.Kencana.Helpdesk.BusinessObjects</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntitySpaces.Core">
+      <HintPath>..\Dlls\EntitySpaces.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="EntitySpaces.DynamicQuery">
+      <HintPath>..\Dlls\EntitySpaces.DynamicQuery.dll</HintPath>
+    </Reference>
+    <Reference Include="EntitySpaces.Interfaces">
+      <HintPath>..\Dlls\EntitySpaces.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="EntitySpaces.Loader">
+      <HintPath>..\Dlls\EntitySpaces.Loader.dll</HintPath>
+    </Reference>
+    <Reference Include="EntitySpaces.SqlClientProvider">
+      <HintPath>..\Dlls\EntitySpaces.SqlClientProvider.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Custom\ADefHelpDeskAttachments.cs" />
+    <Compile Include="Custom\ADefHelpDeskAttachmentsCollection.cs" />
+    <Compile Include="Custom\ADefHelpDeskAttachmentsQuery.cs" />
+    <Compile Include="Custom\ADefHelpDeskCategories.cs" />
+    <Compile Include="Custom\ADefHelpDeskCategoriesCollection.cs" />
+    <Compile Include="Custom\ADefHelpDeskCategoriesQuery.cs" />
+    <Compile Include="Custom\ADefHelpDeskDepartment.cs" />
+    <Compile Include="Custom\ADefHelpDeskDepartmentCollection.cs" />
+    <Compile Include="Custom\ADefHelpDeskDepartmentQuery.cs" />
+    <Compile Include="Custom\ADefHelpDeskLastSearch.cs" />
+    <Compile Include="Custom\ADefHelpDeskLastSearchCollection.cs" />
+    <Compile Include="Custom\ADefHelpDeskLastSearchQuery.cs" />
+    <Compile Include="Custom\ADefHelpDeskLog.cs" />
+    <Compile Include="Custom\ADefHelpDeskLogCollection.cs" />
+    <Compile Include="Custom\ADefHelpDeskLogQuery.cs" />
+    <Compile Include="Custom\ADefHelpDeskNewsticker.cs" />
+    <Compile Include="Custom\ADefHelpDeskNewstickerCollection.cs" />
+    <Compile Include="Custom\ADefHelpDeskNewstickerQuery.cs" />
+    <Compile Include="Custom\ADefHelpDeskRIAUsers.cs" />
+    <Compile Include="Custom\ADefHelpDeskRIAUsersCollection.cs" />
+    <Compile Include="Custom\ADefHelpDeskRIAUsersQuery.cs" />
+    <Compile Include="Custom\ADefHelpDeskRoles.cs" />
+    <Compile Include="Custom\ADefHelpDeskRolesCollection.cs" />
+    <Compile Include="Custom\ADefHelpDeskRolesQuery.cs" />
+    <Compile Include="Custom\ADefHelpDeskSettings.cs" />
+    <Compile Include="Custom\ADefHelpDeskSettingsCollection.cs" />
+    <Compile Include="Custom\ADefHelpDeskSettingsQuery.cs" />
+    <Compile Include="Custom\ADefHelpDeskTaskAssociations.cs" />
+    <Compile Include="Custom\ADefHelpDeskTaskAssociationsCollection.cs" />
+    <Compile Include="Custom\ADefHelpDeskTaskAssociationsQuery.cs" />
+    <Compile Include="Custom\ADefHelpDeskTaskCategories.cs" />
+    <Compile Include="Custom\ADefHelpDeskTaskCategoriesCollection.cs" />
+    <Compile Include="Custom\ADefHelpDeskTaskCategoriesQuery.cs" />
+    <Compile Include="Custom\ADefHelpDeskTaskDetails.cs" />
+    <Compile Include="Custom\ADefHelpDeskTaskDetailsCollection.cs" />
+    <Compile Include="Custom\ADefHelpDeskTaskDetailsQuery.cs" />
+    <Compile Include="Custom\ADefHelpDeskTasks.cs" />
+    <Compile Include="Custom\ADefHelpDeskTasksCollection.cs" />
+    <Compile Include="Custom\ADefHelpDeskTasksQuery.cs" />
+    <Compile Include="Custom\ADefHelpDeskUserRoles.cs" />
+    <Compile Include="Custom\ADefHelpDeskUserRolesCollection.cs" />
+    <Compile Include="Custom\ADefHelpDeskUserRolesQuery.cs" />
+    <Compile Include="Custom\ADefHelpDeskUsers.cs" />
+    <Compile Include="Custom\ADefHelpDeskUsersCollection.cs" />
+    <Compile Include="Custom\ADefHelpDeskUsersQuery.cs" />
+    <Compile Include="Custom\ADefHelpDeskVersion.cs" />
+    <Compile Include="Custom\ADefHelpDeskVersionCollection.cs" />
+    <Compile Include="Custom\ADefHelpDeskVersionQuery.cs" />
+    <Compile Include="Custom\AppUser.cs" />
+    <Compile Include="Custom\AppUserCollection.cs" />
+    <Compile Include="Custom\AppUserQuery.cs" />
+    <Compile Include="Generated\ADefHelpDeskAttachments.cs" />
+    <Compile Include="Generated\ADefHelpDeskCategories.cs" />
+    <Compile Include="Generated\ADefHelpDeskDepartment.cs" />
+    <Compile Include="Generated\ADefHelpDeskLastSearch.cs" />
+    <Compile Include="Generated\ADefHelpDeskLog.cs" />
+    <Compile Include="Generated\ADefHelpDeskNewsticker.cs" />
+    <Compile Include="Generated\ADefHelpDeskRIAUsers.cs" />
+    <Compile Include="Generated\ADefHelpDeskRoles.cs" />
+    <Compile Include="Generated\ADefHelpDeskSettings.cs" />
+    <Compile Include="Generated\ADefHelpDeskTaskAssociations.cs" />
+    <Compile Include="Generated\ADefHelpDeskTaskCategories.cs" />
+    <Compile Include="Generated\ADefHelpDeskTaskDetails.cs" />
+    <Compile Include="Generated\ADefHelpDeskTasks.cs" />
+    <Compile Include="Generated\ADefHelpDeskUserRoles.cs" />
+    <Compile Include="Generated\ADefHelpDeskUsers.cs" />
+    <Compile Include="Generated\ADefHelpDeskVersion.cs" />
+    <Compile Include="Generated\AppUser.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
