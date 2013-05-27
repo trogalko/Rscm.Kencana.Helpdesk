@@ -16,12 +16,15 @@
                 <ext:FormPanel runat="server">
                     <Items>
                         <ext:TextField runat="server" ID="txtTitle" FieldLabel="Title" LabelAlign="Top" Margin="0" AllowBlank="false" Width="600" />                        
-                        <ext:TextArea runat="server" ID="txtDesc" FieldLabel="Description" LabelAlign="Top" Margin="0" AllowBlank="false" Width="600" />
+                        <ext:TextArea runat="server" ID="txtDesc" FieldLabel="Description" LabelAlign="Top" Margin="0" AllowBlank="false" Width="600" MaxLengthText="148" />
                     </Items>
                 </ext:FormPanel>
             </Items>
             <Buttons>
                 <ext:Button runat="server" ID="btnSave" Text="Save" Icon="Disk">
+                <Listeners>
+                    <Click Handler="App.direct.btnSave_Click();parentAutoLoadControl.close();" />
+                </Listeners>
                 </ext:Button>                
             </Buttons>
         </ext:Panel>

@@ -28,3 +28,13 @@ H:\Github\Rscm.Kencana.Helpdesk\Rscm.Kencana.Helpdesk.BusinessObjects\bin\Debug\
 H:\Github\Rscm.Kencana.Helpdesk\Rscm.Kencana.Helpdesk.BusinessObjects\obj\Debug\Rscm.Kencana.Helpdesk.BusinessObjects.csprojResolveAssemblyReference.cache
 H:\Github\Rscm.Kencana.Helpdesk\Rscm.Kencana.Helpdesk.BusinessObjects\obj\Debug\Rscm.Kencana.Helpdesk.BusinessObjects.dll
 H:\Github\Rscm.Kencana.Helpdesk\Rscm.Kencana.Helpdesk.BusinessObjects\obj\Debug\Rscm.Kencana.Helpdesk.BusinessObjects.pdb
+D:\Github\BizLiven\Rscm.Kencana.Helpdesk\Rscm.Kencana.Helpdesk.BusinessObjects\bin\Debug\Rscm.Kencana.Helpdesk.BusinessObjects.dll
+D:\Github\BizLiven\Rscm.Kencana.Helpdesk\Rscm.Kencana.Helpdesk.BusinessObjects\bin\Debug\Rscm.Kencana.Helpdesk.BusinessObjects.pdb
+D:\Github\BizLiven\Rscm.Kencana.Helpdesk\Rscm.Kencana.Helpdesk.BusinessObjects\bin\Debug\EntitySpaces.Core.dll
+D:\Github\BizLiven\Rscm.Kencana.Helpdesk\Rscm.Kencana.Helpdesk.BusinessObjects\bin\Debug\EntitySpaces.DynamicQuery.dll
+D:\Github\BizLiven\Rscm.Kencana.Helpdesk\Rscm.Kencana.Helpdesk.BusinessObjects\bin\Debug\EntitySpaces.Interfaces.dll
+D:\Github\BizLiven\Rscm.Kencana.Helpdesk\Rscm.Kencana.Helpdesk.BusinessObjects\bin\Debug\EntitySpaces.Loader.dll
+D:\Github\BizLiven\Rscm.Kencana.Helpdesk\Rscm.Kencana.Helpdesk.BusinessObjects\bin\Debug\EntitySpaces.SqlClientProvider.dll
+D:\Github\BizLiven\Rscm.Kencana.Helpdesk\Rscm.Kencana.Helpdesk.BusinessObjects\obj\Debug\Rscm.Kencana.Helpdesk.BusinessObjects.csprojResolveAssemblyReference.cache
+D:\Github\BizLiven\Rscm.Kencana.Helpdesk\Rscm.Kencana.Helpdesk.BusinessObjects\obj\Debug\Rscm.Kencana.Helpdesk.BusinessObjects.dll
+D:\Github\BizLiven\Rscm.Kencana.Helpdesk\Rscm.Kencana.Helpdesk.BusinessObjects\obj\Debug\Rscm.Kencana.Helpdesk.BusinessObjects.pdb

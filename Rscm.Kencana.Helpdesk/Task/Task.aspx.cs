@@ -56,7 +56,7 @@ namespace Rscm.Kencana.Helpdesk.Task
             };
             winNew.Loader = new ComponentLoader 
             {
-                Url = "~/Task/TaskAdd.aspx",
+                Url = "~/Task/TaskAdd.aspx?isnew=1",
                 Mode = LoadMode.Frame
             };
             winNew.Render(this.Form);
@@ -71,9 +71,9 @@ namespace Rscm.Kencana.Helpdesk.Task
             ADefHelpDeskUsersQuery u = new ADefHelpDeskUsersQuery("c");
             t.Select(t.TaskID, t.Status, t.DueDate, t.CreatedDate, t.AssignedRoleID, t.Description, t.RequesterUserID, t.RequesterName,
                 tD.DetailID,tD.DetailType,tD.UserID,tD.InsertDate,tD.Description.As("Comment"),tD.StartTime,tD.StopTime,u.Username);
-            t.InnerJoin(tD).On(t.TaskID == tD.TaskID);
+            t.LeftJoin(tD).On(t.TaskID == tD.TaskID);
             t.InnerJoin(u).On(t.AssignedRoleID == u.UserID);
-            t.OrderBy(t.TaskID.Ascending);
+            //t.OrderBy(t.TaskID.Ascending);
             DataTable dTask = t.LoadDataTable();
             storeTask.DataSource = dTask;
             storeTask.DataBind();            

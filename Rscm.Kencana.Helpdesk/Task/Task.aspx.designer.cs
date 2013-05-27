@@ -85,6 +85,15 @@ namespace Rscm.Kencana.Helpdesk.Task {
         protected global::Ext.Net.Button btnSearch;
         
         /// <summary>
+        /// pnlDetails control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Panel pnlDetails;
+        
+        /// <summary>
         /// wNew control.
         /// </summary>
         /// <remarks>
