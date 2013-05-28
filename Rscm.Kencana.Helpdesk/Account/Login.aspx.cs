@@ -36,7 +36,8 @@ namespace Rscm.Kencana.Helpdesk.Account
 
         protected bool UserLogin(string userName, string password)
         {
-            _user.es.Connection.Name = "KENCANA";            
+            //_user.es.Connection.Name = "KENCANA";
+            _user.es.Connection.Name = "LOCAL_HIS";
             if (_user.LoadByPrimaryKey(userName))
             {
                 if (_user.Password.Equals(Crypto.Encrypt(password)))
