@@ -22,8 +22,11 @@ namespace Rscm.Kencana.Helpdesk.Task
         public void btnSave_Click()
         {            
             ADefHelpDeskTasks t = new ADefHelpDeskTasks();
+            ADefHelpDeskTasksQuery tQ = new ADefHelpDeskTasksQuery("a");
+            ADefHelpDeskTasksCollection tC = new ADefHelpDeskTasksCollection();
+            ADefHelpDeskTaskDetails tD = new ADefHelpDeskTaskDetails();
             t.PortalID = 0;
-            t.Description = txtDesc.Text;
+            t.Description = txtTitle.Text;
             t.Status = "New";
             t.Priority = "High";
             t.CreatedDate = DateTime.Now;
@@ -31,9 +34,9 @@ namespace Rscm.Kencana.Helpdesk.Task
             t.EstimatedCompletion = DateTime.Now.AddDays(7);
             t.DueDate = DateTime.Now.AddDays(14);
             t.AssignedRoleID = 1;
-            //Password Ticket
-            Guid g = new Guid();
-            t.TicketPassword = Guid.NewGuid().ToString();
+            //Password Ticket            
+            string tikPass = Guid.NewGuid().ToString();
+            t.TicketPassword = tikPass;
             //Get username ID
             ADefHelpDeskUsersQuery uq = new ADefHelpDeskUsersQuery("a");
             ADefHelpDeskUsersCollection uc = new ADefHelpDeskUsersCollection();
@@ -49,6 +52,21 @@ namespace Rscm.Kencana.Helpdesk.Task
                 }
             }
             t.Save();
+            tQ.SelectAll().Where(tQ.TicketPassword == tikPass);
+            tQ.es.Top = 1;
+            tC.Load(tQ);
+            if (tC.Count > 0)
+            {
+                foreach (ADefHelpDeskTasks tt in tC)
+                {
+                    tD.TaskID = tt.TaskID;
+                    tD.DetailType = "Details";
+                    tD.InsertDate = tt.CreatedDate;
+                    tD.Description = txtDesc.Text;
+                    tD.UserID = tt.RequesterUserID;
+                    tD.Save();
+                }
+            }
             MessageBus.Default.Publish("grdTask_Refresh");
             //X.Js.Call("onWinClose");
         }

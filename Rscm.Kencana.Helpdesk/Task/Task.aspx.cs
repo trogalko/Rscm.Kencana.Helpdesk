@@ -104,7 +104,25 @@ namespace Rscm.Kencana.Helpdesk.Task
         [DirectMethod]
         public void grdTask_Edit(string TaskID)
         {
-            X.Msg.Alert("Edit",TaskID).Show();
+            Window winNew = new Window
+            {
+                ID = "winEdit",
+                Title = "Add New",
+                Height = 400,
+                Width = 700,
+                BodyPadding = 5,
+                Modal = true,
+                Closable = true,
+                CloseAction = CloseAction.Hide,
+                AutoShow = false
+            };
+            winNew.Loader = new ComponentLoader
+            {
+                Url = "~/Task/TaskEdit.aspx?isedit=1&TaskID=" + TaskID,
+                Mode = LoadMode.Frame
+            };
+            winNew.Render(this.Form);
+            //winNew.Show();
         }
 
         [DirectMethod]
@@ -146,6 +164,12 @@ namespace Rscm.Kencana.Helpdesk.Task
                     MessageBus.Default.Publish("grdTask_Refresh");                    
                 }
             }
+        }
+
+        [DirectMethod]
+        public void grdTask_Select(string TaskID)
+        {
+            X.Msg.Alert("Info",TaskID).Show();
         }
     }
 }
