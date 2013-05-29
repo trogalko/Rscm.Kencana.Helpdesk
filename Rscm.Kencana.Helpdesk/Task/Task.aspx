@@ -3,8 +3,14 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-
-<ext:Panel runat="server">
+    <script runat="server">
+        protected void gridDetails_Refresh(object sender, DirectEventArgs e)
+        {
+            RowSelectionModel rm = this.grdTask.GetSelectionModel() as RowSelectionModel;
+            lblHtml.Html = rm.SelectedRow.RecordID;
+        }
+    </script>
+<ext:Panel runat="server" MinWidth="800" MinHeight="800">
 <Items>
     <ext:Panel runat="server" ID="pnlTask" Title="REQUESTS" MinHeight="400" Split="true">
         <Items>
@@ -96,7 +102,13 @@
                     <ext:MessageBusListener Name="grdTask_Refresh" Handler="this.getStore().reload();" />                    
                 </MessageBusListeners>                
                 <SelectionModel>
-                    <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" Mode="Single">                        
+                    <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" Mode="Single">       
+                        <%--<DirectEvents>
+                            <Select OnEvent="gridDetails_Refresh" />
+                        </DirectEvents> --%>
+                        <Listeners>
+                            <Select Delay="300" Handler="App.direct.grdTask_Select();" />                            
+                        </Listeners>                
                     </ext:RowSelectionModel>                    
                 </SelectionModel>
                 <Features>
@@ -116,11 +128,23 @@
             </ext:GridPanel>
         </Items>
     </ext:Panel>
-    <ext:Panel runat="server" ID="pnlDetails" Height="180" Collapsible="true">
+    <ext:Panel runat="server" ID="pnlDetails" MinHeight="400">
         <Items>
-            <ext:Panel runat="server">
+            <ext:Panel runat="server" MinHeight="400">
+                <TopBar>
+                    <ext:Toolbar runat="server">
+                        <Items>
+                            <ext:Button runat="server" ID="btnComment" Text="Add Comment" Icon="CommentAdd">
+                                <Listeners>
+                                    <Click Handler="App.direct.btnComment_Click();" />
+                                </Listeners>
+                            </ext:Button>
+                        </Items>
+                    </ext:Toolbar>
+                </TopBar>
                 <Items>                    
-                    <ext:Label runat="server" ID="lblHtml" Html="<p><b>Aku seorang kapiten</b></p><p>Ciyus lohhh</p>dfdfdfdfdfdfd" />
+                    <ext:Label runat="server" ID="lblHtml" Html="<b>Comment :</b><br>" />       
+                    <ext:TextArea runat="server" ID="txtComment" Width="500" FieldLabel="Comment" />             
                 </Items>
             </ext:Panel>
             <ext:Panel runat="server">

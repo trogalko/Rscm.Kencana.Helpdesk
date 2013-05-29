@@ -18,8 +18,8 @@ namespace Rscm.Kencana.Helpdesk
             if (loginName != null && Session != null)           
             {
                 AppUser _user = new AppUser();
-                //_user.es.Connection.Name = "KENCANA";
-                _user.es.Connection.Name = "LOCAL_HIS";
+                _user.es.Connection.Name = "KENCANA";
+                //_user.es.Connection.Name = "LOCAL_HIS";
                 if (_user.LoadByPrimaryKey(HttpContext.Current.User.Identity.Name))
                 loginName.FormatString = _user.UserName;
             }

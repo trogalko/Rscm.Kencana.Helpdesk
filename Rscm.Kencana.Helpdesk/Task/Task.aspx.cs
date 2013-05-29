@@ -14,6 +14,17 @@ namespace Rscm.Kencana.Helpdesk.Task
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            string username = HttpContext.Current.User.Identity.Name;            
+            ADefHelpDeskUsersQuery uu = new ADefHelpDeskUsersQuery();
+            ADefHelpDeskUsersCollection uuC = new ADefHelpDeskUsersCollection();
+            uu.SelectAll().Where(uu.Username == username);
+            uu.es.Top = 1;
+            uuC.Load(uu);
+            foreach (ADefHelpDeskUsers uuu in uuC)
+            {
+                Session["UserID"] = uuu.UserID;
+            }
+            
             if (!X.IsAjaxRequest)
             {
                 this.storeStatus.DataSource = new object[]
@@ -23,8 +34,8 @@ namespace Rscm.Kencana.Helpdesk.Task
                     new object[] {"Cancelled", "Cancelled"}
                 };
                     this.storeStatus.DataBind();
-                    this.cmbStatus.SetRawValue("New");
-                }
+                    this.cmbStatus.SetRawValue("New");                    
+            }
         }
 
         [DirectMethod]
@@ -69,10 +80,11 @@ namespace Rscm.Kencana.Helpdesk.Task
             ADefHelpDeskTasksQuery t = new ADefHelpDeskTasksQuery("a");
             ADefHelpDeskTaskDetailsQuery tD = new ADefHelpDeskTaskDetailsQuery("b");
             ADefHelpDeskUsersQuery u = new ADefHelpDeskUsersQuery("c");
-            t.Select(t.TaskID, t.Status, t.DueDate, t.CreatedDate, t.AssignedRoleID, t.Description, t.RequesterUserID, t.RequesterName,
-                tD.DetailID,tD.DetailType,tD.UserID,tD.InsertDate,tD.Description.As("Comment"),tD.StartTime,tD.StopTime,u.Username);
-            t.LeftJoin(tD).On(t.TaskID == tD.TaskID);
+            t.Select(t.TaskID, t.Status, t.DueDate, t.CreatedDate, t.AssignedRoleID, t.Description, t.RequesterUserID, t.RequesterName,u.Username);
+                //tD.DetailID,tD.DetailType,tD.UserID,tD.InsertDate,tD.Description.As("Comment"),tD.StartTime,tD.StopTime,u.Username);
+            //t.RightJoin(tD).On(t.TaskID == tD.TaskID);
             t.InnerJoin(u).On(t.AssignedRoleID == u.UserID);
+            t.es.Distinct = true;
             //t.OrderBy(t.TaskID.Ascending);
             DataTable dTask = t.LoadDataTable();
             storeTask.DataSource = dTask;
@@ -167,9 +179,77 @@ namespace Rscm.Kencana.Helpdesk.Task
         }
 
         [DirectMethod]
-        public void grdTask_Select(string TaskID)
+        public void grdTask_Select()
         {
-            X.Msg.Alert("Info",TaskID).Show();
+            int taskID = 0;
+            RowSelectionModel rm = this.grdTask.GetSelectionModel() as RowSelectionModel;
+            if (rm.SelectedRows.Count > 0)
+            {
+                if (!int.TryParse(rm.SelectedRow.RecordID, out taskID))
+                    taskID = 0;
+                if (taskID <= 0)
+                    return;
+                Session["TaskID"] = taskID;
+                ADefHelpDeskTasks t = new ADefHelpDeskTasks();
+                if (t.LoadByPrimaryKey(taskID))
+                {
+                    ADefHelpDeskTaskDetailsQuery tQ = new ADefHelpDeskTaskDetailsQuery("a");
+                    ADefHelpDeskTaskDetailsCollection tC = new ADefHelpDeskTaskDetailsCollection();
+                    tQ.SelectAll().Where(tQ.TaskID == taskID);
+                    tC.Load(tQ);
+                    if (tC.Count > 0)
+                    {
+                        string detail = string.Empty;
+                        foreach (ADefHelpDeskTaskDetails tD in tC)
+                        {
+                            ADefHelpDeskUsers u = new ADefHelpDeskUsers();
+                            detail += tD.Description;
+                            if (u.LoadByPrimaryKey((int)tD.UserID))
+                            {                                                                
+                                detail += "<br><br><b>User : </b>" + u.FirstName;
+                                //detail += "<b>User : </b>" + u.FirstName + ", <b>Insert Date : </b>" + tD.InsertDate.ToString();
+                                //detail += "<br><br><br>";                                
+                            }
+                            detail += ", <b>Insert Date : </b>" + tD.InsertDate.ToString() + "<br>---------------------------------------------------------<br>";
+                            lblHtml.Html = detail;
+                        }
+                    }
+                    else
+                        lblHtml.Html = string.Empty;
+                }
+            }
+        }
+
+        [DirectMethod]
+        public void btnComment_Click()
+        {
+            if (string.IsNullOrEmpty(txtComment.Text.Trim()))
+            {
+                X.Msg.Notify("Dire news indeed", "Your Excellency, Comment must not empty").Show();
+                return;
+            }            
+            if (Session["TaskID"] == null)
+            {
+                X.Msg.Notify("Dire news indeed", "Your Excellency, You must select a task above first").Show();
+                return;
+            }
+            if (Session["UserID"] == null)
+            {
+                X.Msg.Notify("Dire news indeed", "Your Excellency, Please do some re-login first").Show();
+                return;
+            }
+            int TaskID = (int)Session["TaskID"];
+            //int UserID = (int)Session["UserID"];
+            ADefHelpDeskTaskDetails td = new ADefHelpDeskTaskDetails();
+            td.TaskID = TaskID;
+            td.DetailType = "Comment-Visible";
+            td.InsertDate = DateTime.Now;
+            td.UserID = (int)Session["UserID"]; ;
+            td.Description = txtComment.Text.Trim();
+            td.Save();
+            X.Msg.Notify("Excelent job my Liege", "Your Excellency, I am happy to inform You that your comment has been saved successfully").Show();
+            txtComment.Text = string.Empty;
+            grdTask_Select();
         }
     }
 }
