@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Ext.Net;
 using Rscm.Kencana.Helpdesk.BusinessObjects;
+using System.Data;
 
 namespace Rscm.Kencana.Helpdesk.Task
 {
@@ -15,12 +16,24 @@ namespace Rscm.Kencana.Helpdesk.Task
         {
             if (Request.QueryString["isnew"] == null)
                 Response.Redirect("~/Default.aspx");
-            //X.Js.Call("onWinClose");            
+            //X.Js.Call("onWinClose");  
+            if (!X.IsAjaxRequest)
+            {
+                ServiceUnitQuery sQ = new ServiceUnitQuery("a");
+                sQ.SelectAll().Where(sQ.IsActive == true);
+                sQ.es2.Connection.Name = "KENCANA";                                
+                storeSU.DataSource = sQ.LoadDataTable();
+                storeSU.DataBind();
+            }
         }
 
         [DirectMethod]
         public void btnSave_Click()
-        {            
+        {
+            if (string.IsNullOrEmpty(txtTitle.Text) && string.IsNullOrEmpty(txtDesc.Text) && string.IsNullOrEmpty(cmbServiceUnit.SelectedItem.Value))
+            {
+                return;
+            }
             ADefHelpDeskTasks t = new ADefHelpDeskTasks();
             ADefHelpDeskTasksQuery tQ = new ADefHelpDeskTasksQuery("a");
             ADefHelpDeskTasksCollection tC = new ADefHelpDeskTasksCollection();

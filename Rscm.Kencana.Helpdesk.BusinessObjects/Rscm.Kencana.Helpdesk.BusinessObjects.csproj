@@ -107,6 +107,9 @@
     <Compile Include="Custom\AppUser.cs" />
     <Compile Include="Custom\AppUserCollection.cs" />
     <Compile Include="Custom\AppUserQuery.cs" />
+    <Compile Include="Custom\ServiceUnit.cs" />
+    <Compile Include="Custom\ServiceUnitCollection.cs" />
+    <Compile Include="Custom\ServiceUnitQuery.cs" />
     <Compile Include="Generated\ADefHelpDeskAttachments.cs" />
     <Compile Include="Generated\ADefHelpDeskCategories.cs" />
     <Compile Include="Generated\ADefHelpDeskDepartment.cs" />
@@ -124,6 +127,7 @@
     <Compile Include="Generated\ADefHelpDeskUsers.cs" />
     <Compile Include="Generated\ADefHelpDeskVersion.cs" />
     <Compile Include="Generated\AppUser.cs" />
+    <Compile Include="Generated\ServiceUnit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

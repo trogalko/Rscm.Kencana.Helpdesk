@@ -13,11 +13,28 @@
     <div>
         <ext:Panel runat="server" Width="650" Height="330">
             <Items>
-                <ext:FormPanel runat="server">
-                    <Items>
-                        <ext:TextField runat="server" ID="txtTitle" FieldLabel="Title" LabelAlign="Top" Margin="0" AllowBlank="false" Width="600" />                        
-                        <ext:TextArea runat="server" ID="txtDesc" FieldLabel="Description" LabelAlign="Top" Margin="0" AllowBlank="false" Width="600" MaxLengthText="148" />
+                <ext:FormPanel runat="server" MonitorValid="true">
+                    <Items>                        
+                        <ext:TextField runat="server" ID="txtTitle" FieldLabel="Title" Margin="0" AllowBlank="false" Width="600" Frame="true" />                        
+                        <ext:TextArea runat="server" ID="txtDesc" FieldLabel="Description" Margin="0" AllowBlank="false" Width="600" MaxLengthText="148" Frame="true" />
+                        <ext:ComboBox runat="server" ID="cmbServiceUnit" DisplayField="ServiceUnitName" ValueField="ServiceUnitID" FieldLabel="Request to Service Unit" Margin="0" Width="600" AllowBlank="false" Frame="true">
+                            <Store>
+                                <ext:Store runat="server" ID="storeSU">
+                                    <Model>
+                                        <ext:Model runat="server">
+                                            <Fields>
+                                                <ext:ModelField Name="ServiceUnitID" />
+                                                <ext:ModelField Name="ServiceUnitName" />
+                                            </Fields>
+                                        </ext:Model>
+                                    </Model>
+                                </ext:Store>
+                            </Store>
+                        </ext:ComboBox>
                     </Items>
+                    <Listeners>
+                        <ValidityChange Handler="#{btnSave}.setDisabled(!valid);" />
+                    </Listeners>
                 </ext:FormPanel>
             </Items>
             <Buttons>
