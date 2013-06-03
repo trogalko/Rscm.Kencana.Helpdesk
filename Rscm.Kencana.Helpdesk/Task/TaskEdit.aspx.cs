@@ -15,12 +15,13 @@ namespace Rscm.Kencana.Helpdesk.Task
         {
             int taskID = 0;            
             if (Request.QueryString["isedit"] == null & Request.QueryString["TaskID"] == null)
-                Response.Redirect("~/Default.aspx");
+                Response.Redirect("~/404.aspx");
             if(!int.TryParse(Request.QueryString["TaskID"].ToString(),out taskID))
                 taskID = 0;
+            Session["taskid"] = taskID;
             ADefHelpDeskTasks t = new ADefHelpDeskTasks();  
             if (!t.LoadByPrimaryKey(taskID))
-                Response.Redirect("~/Default.aspx");
+                Response.Redirect("~/404.aspx");
             ADefHelpDeskTaskDetailsQuery tQ = new ADefHelpDeskTaskDetailsQuery("a");
             ADefHelpDeskTaskDetailsCollection tC = new ADefHelpDeskTaskDetailsCollection();
             tQ.SelectAll().Where(tQ.TaskID == taskID && tQ.DetailType == "Details");
@@ -44,34 +45,65 @@ namespace Rscm.Kencana.Helpdesk.Task
         [DirectMethod]
         public void btnSave_Click()
         {
+            int taskID = 0;
+            if (Session["taskid"] != null)
+                taskID = (int)Session["taskid"];
+            else
+                Response.Redirect("~/404.aspx");
+
             ADefHelpDeskTasks t = new ADefHelpDeskTasks();
-            t.PortalID = 0;
-            t.Description = txtDesc.Text;
-            t.Status = "New";
-            t.Priority = "High";
-            t.CreatedDate = DateTime.Now;
-            t.EstimatedStart = DateTime.Now;
-            t.EstimatedCompletion = DateTime.Now.AddDays(7);
-            t.DueDate = DateTime.Now.AddDays(14);
-            t.AssignedRoleID = 1;
-            //Password Ticket
-            Guid g = new Guid();
-            t.TicketPassword = Guid.NewGuid().ToString();
-            //Get username ID
-            ADefHelpDeskUsersQuery uq = new ADefHelpDeskUsersQuery("a");
-            ADefHelpDeskUsersCollection uc = new ADefHelpDeskUsersCollection();
-            uq.SelectAll().Where(uq.Username == HttpContext.Current.User.Identity.Name.ToString().Trim());
-            uq.es.Top = 1;
-            uc.Load(uq);
-            if (uc.Count > 0)
+            ADefHelpDeskTaskDetails td = new ADefHelpDeskTaskDetails();
+            ADefHelpDeskTaskDetailsQuery tdQ = new ADefHelpDeskTaskDetailsQuery("a");
+            ADefHelpDeskTaskDetailsCollection tdC = new ADefHelpDeskTaskDetailsCollection();
+            if (t.LoadByPrimaryKey(taskID))
             {
-                foreach (ADefHelpDeskUsers u in uc)
+                t.Description = txtTitle.Text;
+                tdQ.SelectAll().Where(tdQ.TaskID == taskID, tdQ.DetailType == "Details");
+                tdQ.es.Top = 1;
+                tdC.Load(tdQ);
+                if (tdC.Count > 0)
                 {
-                    t.RequesterUserID = u.UserID;
-                    t.RequesterName = u.FirstName;
+                    foreach (ADefHelpDeskTaskDetails ttt in tdC)
+                    {
+                        if (td.LoadByPrimaryKey((int)ttt.DetailID))
+                        {
+                            td.Description = txtDesc.Text;
+                            td.Save();
+                        }
+                    }
                 }
+                t.Save();
             }
-            t.Save();
+
+
+
+            //t.PortalID = 0;
+            //t.Description = txtDesc.Text;
+            //t.Status = "New";
+            //t.Priority = "High";
+            //t.CreatedDate = DateTime.Now;
+            //t.EstimatedStart = DateTime.Now;
+            //t.EstimatedCompletion = DateTime.Now.AddDays(7);
+            //t.DueDate = DateTime.Now.AddDays(14);
+            //t.AssignedRoleID = 1;
+            //Password Ticket
+            //Guid g = new Guid();
+            //t.TicketPassword = Guid.NewGuid().ToString();
+            //Get username ID
+            //ADefHelpDeskUsersQuery uq = new ADefHelpDeskUsersQuery("a");
+            //ADefHelpDeskUsersCollection uc = new ADefHelpDeskUsersCollection();
+            //uq.SelectAll().Where(uq.Username == HttpContext.Current.User.Identity.Name.ToString().Trim());
+            //uq.es.Top = 1;
+            //uc.Load(uq);
+            //if (uc.Count > 0)
+            //{
+            //    foreach (ADefHelpDeskUsers u in uc)
+            //    {
+            //        t.RequesterUserID = u.UserID;
+            //        t.RequesterName = u.FirstName;
+            //    }
+            //}
+            //t.Save();
             MessageBus.Default.Publish("grdTask_Refresh");
             //X.Js.Call("onWinClose");
         }

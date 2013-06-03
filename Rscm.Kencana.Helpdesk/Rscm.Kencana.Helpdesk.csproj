@@ -96,7 +96,6 @@
     <Content Include="Scripts\jquery-1.4.1.min.js" />
     <Content Include="Task\Task.aspx" />
     <Content Include="Task\TaskAdd.aspx" />
-    <Content Include="Task\TaskComment.aspx" />
     <Content Include="Task\TaskEdit.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -184,13 +183,6 @@
     <Compile Include="Task\TaskAdd.aspx.designer.cs">
       <DependentUpon>TaskAdd.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Task\TaskComment.aspx.cs">
-      <DependentUpon>TaskComment.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Task\TaskComment.aspx.designer.cs">
-      <DependentUpon>TaskComment.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Task\TaskEdit.aspx.cs">
       <DependentUpon>TaskEdit.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -201,6 +193,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="User\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Account\Web.config" />

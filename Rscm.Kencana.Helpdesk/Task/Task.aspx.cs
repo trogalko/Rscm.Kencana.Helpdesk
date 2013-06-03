@@ -119,13 +119,13 @@ namespace Rscm.Kencana.Helpdesk.Task
             Window winNew = new Window
             {
                 ID = "winEdit",
-                Title = "Add New",
+                Title = "Edit",
                 Height = 400,
                 Width = 700,
                 BodyPadding = 5,
                 Modal = true,
                 Closable = true,
-                CloseAction = CloseAction.Hide,
+                CloseAction = CloseAction.Destroy,
                 AutoShow = false
             };
             winNew.Loader = new ComponentLoader

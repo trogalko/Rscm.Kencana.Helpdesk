@@ -12,7 +12,7 @@
     </script>
 <ext:Panel runat="server" MinWidth="800" MinHeight="800">
 <Items>
-    <ext:Panel runat="server" ID="pnlTask" Title="REQUESTS" MinHeight="400" Split="true">
+    <ext:Panel runat="server" ID="pnlTask" Title="REQUESTS" MinHeight="400" Split="true" AutoScroll="true">
         <Items>
             <ext:GridPanel runat="server" ID="grdTask">
                 <Store>
@@ -128,9 +128,9 @@
             </ext:GridPanel>
         </Items>
     </ext:Panel>
-    <ext:Panel runat="server" ID="pnlDetails" MinHeight="400">
+    <ext:Panel runat="server" ID="pnlDetails" MinHeight="400" AutoScroll="true">
         <Items>
-            <ext:Panel runat="server" MinHeight="400">
+            <ext:Panel runat="server" MinHeight="400" AutoScroll="true">
                 <TopBar>
                     <ext:Toolbar runat="server">
                         <Items>
