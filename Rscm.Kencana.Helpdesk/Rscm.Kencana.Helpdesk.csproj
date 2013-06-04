@@ -97,6 +97,7 @@
     <Content Include="Task\Task.aspx" />
     <Content Include="Task\TaskAdd.aspx" />
     <Content Include="Task\TaskEdit.aspx" />
+    <Content Include="User\User.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -190,10 +191,16 @@
     <Compile Include="Task\TaskEdit.aspx.designer.cs">
       <DependentUpon>TaskEdit.aspx</DependentUpon>
     </Compile>
+    <Compile Include="User\User.aspx.cs">
+      <DependentUpon>User.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="User\User.aspx.designer.cs">
+      <DependentUpon>User.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="User\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Account\Web.config" />
