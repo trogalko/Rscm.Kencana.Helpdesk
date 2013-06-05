@@ -29,6 +29,8 @@ namespace Rscm.Kencana.Helpdesk.User
 
                 storeServiceUnit.DataSource = dtS;
                 storeServiceUnit.DataBind();
+                storeUser.DataSource = dtU;
+                storeUser.DataBind();
             }
         }
 
@@ -45,7 +47,29 @@ namespace Rscm.Kencana.Helpdesk.User
             dtS = sQ.LoadDataTable();
 
             storeServiceUnit.DataSource = dtS;
-            storeServiceUnit.DataBind();
+            storeServiceUnit.DataBind();            
+        }
+
+        [DirectMethod]
+        public void storeUser_Refresh(object sender, StoreReadDataEventArgs e)
+        {
+            DataTable dtU = new DataTable();
+            DataTable dtS = new DataTable();
+            AppUserQuery uQ = new AppUserQuery("a");
+            uQ.es2.Connection.Name = "KENCANA";
+            ServiceUnitQuery sQ = new ServiceUnitQuery("b");
+            sQ.es2.Connection.Name = "KENCANA";
+            dtU = uQ.LoadDataTable();
+            dtS = sQ.LoadDataTable();
+            
+            storeUser.DataSource = dtU;
+            storeUser.DataBind();
+        }
+
+        [DirectMethod]
+        public void storeUserOfServiceUnit_Refresh(object sender, StoreReadDataEventArgs e)
+        {
+
         }
     }
 }

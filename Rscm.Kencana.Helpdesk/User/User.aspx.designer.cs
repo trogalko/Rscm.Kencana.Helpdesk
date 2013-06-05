@@ -13,15 +13,6 @@ namespace Rscm.Kencana.Helpdesk.User {
     public partial class User {
         
         /// <summary>
-        /// pnlUser control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Panel pnlUser;
-        
-        /// <summary>
         /// grdServiceUnit control.
         /// </summary>
         /// <remarks>
@@ -49,6 +40,15 @@ namespace Rscm.Kencana.Helpdesk.User {
         protected global::Ext.Net.GridPanel grdUser;
         
         /// <summary>
+        /// storeUser control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store storeUser;
+        
+        /// <summary>
         /// grdUserOfServiceUnit control.
         /// </summary>
         /// <remarks>
@@ -56,5 +56,23 @@ namespace Rscm.Kencana.Helpdesk.User {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.GridPanel grdUserOfServiceUnit;
+        
+        /// <summary>
+        /// storeUserOfServiceUnit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store storeUserOfServiceUnit;
+        
+        /// <summary>
+        /// Model1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Model Model1;
     }
 }
