@@ -31,6 +31,8 @@ namespace Rscm.Kencana.Helpdesk.User
                 storeServiceUnit.DataBind();
                 storeUser.DataSource = dtU;
                 storeUser.DataBind();
+                smGrdServiceUnit.Select(0);
+                smGrdServiceUnit.UpdateSelection();
             }
         }
 

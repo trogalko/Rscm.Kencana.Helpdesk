@@ -13,6 +13,15 @@ namespace Rscm.Kencana.Helpdesk.User {
     public partial class User {
         
         /// <summary>
+        /// btnSave control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button btnSave;
+        
+        /// <summary>
         /// grdServiceUnit control.
         /// </summary>
         /// <remarks>
@@ -47,6 +56,15 @@ namespace Rscm.Kencana.Helpdesk.User {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Store storeUser;
+        
+        /// <summary>
+        /// smGrdServiceUnit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowSelectionModel smGrdServiceUnit;
         
         /// <summary>
         /// grdUserOfServiceUnit control.

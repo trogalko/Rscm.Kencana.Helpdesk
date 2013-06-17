@@ -7,6 +7,13 @@
         <LayoutConfig>
             <ext:HBoxLayoutConfig Align="StretchMax" Padding="5" />
         </LayoutConfig>
+        <TopBar>
+            <ext:Toolbar runat="server">
+                <Items>
+                    <ext:Button runat="server" ID="btnSave" Text="SAVE" Icon="Disk" />
+                </Items>
+            </ext:Toolbar>
+        </TopBar>
         <Items>
             <ext:GridPanel runat="server" ID="grdServiceUnit" Flex="1" Title="Service Units List" TitleAlign="Left" TitleCollapse="true">
                 <Store>
@@ -31,7 +38,7 @@
                     </Columns>
                 </ColumnModel>
             </ext:GridPanel>    
-            <ext:GridPanel runat="server" ID="grdUser" Flex="1" Title="Users List" TitleAlign="Left" TitleCollapse="true">
+            <ext:GridPanel runat="server" ID="grdUser" Flex="1" Title="Users List" TitleAlign="Left" TitleCollapse="true" MultiSelect="true">
                 <Store>
                     <ext:Store runat="server" ID="storeUser" RemoteSort="false" RemotePaging="false" AutoLoad="true" OnReadData="storeUser_Refresh" PageSize="10">
                         <Proxy>
@@ -53,15 +60,23 @@
                         <ext:Column runat="server" Text="User Name" DataIndex="UserName" Width="220" Flex="19" />
                     </Columns>
                 </ColumnModel>
+                <SelectionModel>
+                    <ext:RowSelectionModel runat="server" ID="smGrdServiceUnit" Mode="Single" />
+                </SelectionModel>
                 <View>
                     <ext:GridView runat="server">
                         <Plugins>
                             <ext:GridDragDrop runat="server" DragGroup="first" DropGroup="second" />
                         </Plugins>
+                        <Listeners>
+                            <AfterRender Handler="this.plugins[0].dragZone.getDragText = getDragDropText;" Delay="1" />
+                            <Drop Handler="var dropOn = overModel ? ' ' + dropPosition + ' ' + overModel.get('UserName') : ' on empty view'; 
+                                               Ext.net.Notification.show({title:'Drag from right to left', html:'Dropped ' + data.records[0].get('UserName') + dropOn});" />
+                        </Listeners>
                     </ext:GridView>
                 </View>
             </ext:GridPanel>
-            <ext:GridPanel runat="server" ID="grdUserOfServiceUnit" Flex="1" Title="Users belong to Service Unit" TitleAlign="Left" TitleCollapse="true">
+            <ext:GridPanel runat="server" ID="grdUserOfServiceUnit" Flex="1" Title="Users belong to Service Unit" TitleAlign="Left" TitleCollapse="true" MultiSelect="true">
                 <Store>
                     <ext:Store runat="server" ID="storeUserOfServiceUnit" RemoteSort="false" RemotePaging="false" AutoLoad="true" OnReadData="storeUserOfServiceUnit_Refresh" PageSize="10">
                         <Proxy>
@@ -83,6 +98,18 @@
                         <ext:Column runat="server" Text="Service Unit" DataIndex="UserName" Width="220" Flex="19" />
                     </Columns>
                 </ColumnModel>
+                <View>
+                    <ext:GridView runat="server">
+                        <Plugins>
+                            <ext:GridDragDrop runat="server" DragGroup="second" DropGroup="first" />
+                        </Plugins>
+                        <Listeners>
+                            <AfterRender Handler="this.plugins[0].dragZone.getDragText = getDragDropText;" Delay="1" />
+                            <Drop Handler="var dropOn = overModel ? ' ' + dropPosition + ' ' + overModel.get('UserName') : ' on empty view'; 
+                                               Ext.net.Notification.show({title:'Drag from right to left', html:'Dropped ' + data.records[0].get('UserName') + dropOn});" />
+                        </Listeners>
+                    </ext:GridView>
+                </View>
             </ext:GridPanel>
         </Items>
     </ext:Panel>

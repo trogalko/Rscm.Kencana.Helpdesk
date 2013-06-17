@@ -56,6 +56,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Custom\ADefHelpDeskUserUserGroup.cs" />
+    <Compile Include="Custom\ADefHelpDeskUserUserGroupCollection.cs" />
+    <Compile Include="Custom\ADefHelpDeskUserUserGroupQuery.cs" />
+    <Compile Include="Generated\ADefHelpDeskUserUserGroup.cs" />
     <Compile Include="Custom\ADefHelpDeskAttachments.cs" />
     <Compile Include="Custom\ADefHelpDeskAttachmentsCollection.cs" />
     <Compile Include="Custom\ADefHelpDeskAttachmentsQuery.cs" />
