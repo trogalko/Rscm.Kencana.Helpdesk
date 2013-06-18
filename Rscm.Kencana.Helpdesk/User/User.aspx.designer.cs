@@ -40,6 +40,15 @@ namespace Rscm.Kencana.Helpdesk.User {
         protected global::Ext.Net.Store storeServiceUnit;
         
         /// <summary>
+        /// smGrdServiceUnit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowSelectionModel smGrdServiceUnit;
+        
+        /// <summary>
         /// grdUser control.
         /// </summary>
         /// <remarks>
@@ -58,13 +67,13 @@ namespace Rscm.Kencana.Helpdesk.User {
         protected global::Ext.Net.Store storeUser;
         
         /// <summary>
-        /// smGrdServiceUnit control.
+        /// smGrdUser control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.RowSelectionModel smGrdServiceUnit;
+        protected global::Ext.Net.RowSelectionModel smGrdUser;
         
         /// <summary>
         /// grdUserOfServiceUnit control.

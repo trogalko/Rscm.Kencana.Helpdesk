@@ -102,10 +102,7 @@
                     <ext:MessageBusListener Name="grdTask_Refresh" Handler="this.getStore().reload();" />                    
                 </MessageBusListeners>                
                 <SelectionModel>
-                    <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" Mode="Single">       
-                        <%--<DirectEvents>
-                            <Select OnEvent="gridDetails_Refresh" />
-                        </DirectEvents> --%>
+                    <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" Mode="Single"> 
                         <Listeners>
                             <Select Delay="300" Handler="App.direct.grdTask_Select();" />                            
                         </Listeners>                

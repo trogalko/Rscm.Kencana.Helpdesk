@@ -37,15 +37,22 @@
                         <ext:Column runat="server" Text="Service Unit" DataIndex="ServiceUnitName" Width="220" Flex="19" />
                     </Columns>
                 </ColumnModel>
+                <SelectionModel>
+                    <ext:RowSelectionModel runat="server" ID="smGrdServiceUnit" Mode="Single" >
+                        <Listeners>
+                            <Select Delay="150" Handler="App.direct.grdServiceUnit_Select();" />                            
+                        </Listeners>
+                    </ext:RowSelectionModel>
+                </SelectionModel>                
             </ext:GridPanel>    
-            <ext:GridPanel runat="server" ID="grdUser" Flex="1" Title="Users List" TitleAlign="Left" TitleCollapse="true" MultiSelect="true">
+            <ext:GridPanel runat="server" ID="grdUser" Flex="1" Title="Users List" TitleAlign="Left" TitleCollapse="true" MultiSelect="false">
                 <Store>
                     <ext:Store runat="server" ID="storeUser" RemoteSort="false" RemotePaging="false" AutoLoad="true" OnReadData="storeUser_Refresh" PageSize="10">
                         <Proxy>
                             <ext:PageProxy />
                         </Proxy>
                         <Model>
-                            <ext:Model runat="server" IDProperty="ServiceUnitID">
+                            <ext:Model runat="server" IDProperty="UserID">
                                 <Fields>
                                     <ext:ModelField Name="UserID" />
                                     <ext:ModelField Name="UserName" Type="String" />
@@ -61,7 +68,11 @@
                     </Columns>
                 </ColumnModel>
                 <SelectionModel>
-                    <ext:RowSelectionModel runat="server" ID="smGrdServiceUnit" Mode="Single" />
+                    <ext:RowSelectionModel runat="server" ID="smGrdUser" Mode="Single" >
+                        <Listeners>
+                            <Select Delay="150" Handler="App.direct.grdUser_Select();" />
+                        </Listeners>
+                    </ext:RowSelectionModel>
                 </SelectionModel>
                 <View>
                     <ext:GridView runat="server">
@@ -75,6 +86,9 @@
                         </Listeners>
                     </ext:GridView>
                 </View>
+                <MessageBusListeners>
+                    <ext:MessageBusListener Name="grdServiceUnit_Select" Handler="App.direct.grdUser_Refresh_From_Select(data);" />
+                </MessageBusListeners>
             </ext:GridPanel>
             <ext:GridPanel runat="server" ID="grdUserOfServiceUnit" Flex="1" Title="Users belong to Service Unit" TitleAlign="Left" TitleCollapse="true" MultiSelect="true">
                 <Store>

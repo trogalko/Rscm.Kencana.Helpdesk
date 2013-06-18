@@ -46,9 +46,9 @@ namespace Rscm.Kencana.Helpdesk.Account
                     q.SelectAll().Where(q.Username == userName);
                     ADefHelpDeskUsersCollection c = new ADefHelpDeskUsersCollection();
                     c.Load(q);
-                    if (c.Count == 1 || c.Count ==0 )
-                    {
-                        ADefHelpDeskUsers a = new ADefHelpDeskUsers();
+                    ADefHelpDeskUsers a = new ADefHelpDeskUsers();
+                    if (c.Count == 0 )
+                    {                        
                         a.Username = userName;
                         a.Password = _user.Password;
                         a.FirstName = _user.UserName;
@@ -56,6 +56,22 @@ namespace Rscm.Kencana.Helpdesk.Account
                         a.IsSuperUser = false;
                         a.Email = userName + "@rscmkencana.com";
                         a.Save();
+                    }
+                    if (c.Count == 1)
+                    {
+                        foreach (ADefHelpDeskUsers U in c)
+                        {
+                            if (a.LoadByPrimaryKey((int)U.UserID))
+                            {
+                                a.Username = userName;
+                                a.Password = _user.Password;
+                                a.FirstName = _user.UserName;
+                                a.LastName = ".";
+                                a.IsSuperUser = false;
+                                a.Email = userName + "@rscmkencana.com";
+                                a.Save(); 
+                            }
+                        }
                     }
                     return true;
                 }
