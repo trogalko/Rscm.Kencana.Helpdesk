@@ -109,7 +109,7 @@ namespace Rscm.Kencana.Helpdesk.User
         }
 
         [DirectMethod]
-        public void grdUser_Select(object sender, DirectEventArgs e)
+        public void grdUser_Select()
         {
  
         }
@@ -117,36 +117,28 @@ namespace Rscm.Kencana.Helpdesk.User
         [DirectMethod]
         public void grdUser_Refresh_From_Select(string ServiceUnitID)
         {
-            DataTable dtU = new DataTable();
-            DataTable dtS = new DataTable();
-            AppUserQuery uQ = new AppUserQuery("a");
-            uQ.SelectAll();
-            uQ.es2.Connection.Name = "KENCANA";
-            ServiceUnitQuery sQ = new ServiceUnitQuery("b");
-            sQ.SelectAll();
-            sQ.es2.Connection.Name = "KENCANA";
-            dtU = uQ.LoadDataTable();
-            dtS = sQ.LoadDataTable();
-
-            var storeSU = X.GetCmp<Store>("storeServiceUnit");
-            Model m = new Model();
-            //model for Service Unit ID
-            m.ID = "model_1";
-            m.IDProperty = "ServiceUnitID";
-            ModelField mf1 = new ModelField("ServiceUnitID");
-            m.Fields.Add(mf1);
-            //model for Service Name
-            ModelField mf2 = new ModelField("ServiceUnitName");
-            m.Fields.Add(mf2);
-            storeSU.Model.Clear();
-            storeSU.Model.Add(m);
-            storeSU.DataSource = dtS;
-            storeSU.DataBind();
+            //DataTable dtU = new DataTable();
+            //DataTable dtS = new DataTable();
+            //AppUserQuery uQ = new AppUserQuery("a");
+            //uQ.SelectAll();
+            //uQ.es2.Connection.Name = "KENCANA";
+            //ServiceUnitQuery sQ = new ServiceUnitQuery("b");
+            //sQ.SelectAll();
+            //sQ.es2.Connection.Name = "KENCANA";
+            //dtU = uQ.LoadDataTable();
+            //dtS = sQ.LoadDataTable();
             //storeServiceUnit.DataSource = dtS;
             //storeServiceUnit.DataBind();
-            storeUser.DataSource = dtU;
-            storeUser.DataBind();
-            this.grdUser.Store.Primary.DataBind();
+            //storeUser.DataSource = dtU;
+            //storeUser.DataBind();            
+        }
+
+        [DirectMethod]
+        public void grdUserOfServiceUnit_Drop(string UserName)
+        {
+            ADefHelpDeskUserUserGroup ug = new ADefHelpDeskUserUserGroup();
+            
+            X.Msg.Notify("Info", UserName).Show();
         }
     }
 }

@@ -18,9 +18,7 @@
             <ext:GridPanel runat="server" ID="grdServiceUnit" Flex="1" Title="Service Units List" TitleAlign="Left" TitleCollapse="true">
                 <Store>
                     <ext:Store runat="server" ID="storeServiceUnit" RemoteSort="false" RemotePaging="false" AutoLoad="true" OnReadData="storeServiceUnit_Refresh" PageSize="10">
-                        <Proxy>
-                            <ext:PageProxy />
-                        </Proxy>
+                        
                         <Model>
                             <ext:Model runat="server" IDProperty="ServiceUnitID">
                                 <Fields>
@@ -48,9 +46,7 @@
             <ext:GridPanel runat="server" ID="grdUser" Flex="1" Title="Users List" TitleAlign="Left" TitleCollapse="true" MultiSelect="false">
                 <Store>
                     <ext:Store runat="server" ID="storeUser" RemoteSort="false" RemotePaging="false" AutoLoad="true" OnReadData="storeUser_Refresh" PageSize="10">
-                        <Proxy>
-                            <ext:PageProxy />
-                        </Proxy>
+                        
                         <Model>
                             <ext:Model runat="server" IDProperty="UserID">
                                 <Fields>
@@ -93,9 +89,7 @@
             <ext:GridPanel runat="server" ID="grdUserOfServiceUnit" Flex="1" Title="Users belong to Service Unit" TitleAlign="Left" TitleCollapse="true" MultiSelect="true">
                 <Store>
                     <ext:Store runat="server" ID="storeUserOfServiceUnit" RemoteSort="false" RemotePaging="false" AutoLoad="true" OnReadData="storeUserOfServiceUnit_Refresh" PageSize="10">
-                        <Proxy>
-                            <ext:PageProxy />
-                        </Proxy>
+                        
                         <Model>
                             <ext:Model ID="Model1" runat="server" IDProperty="ServiceUnitID">
                                 <Fields>
@@ -119,8 +113,8 @@
                         </Plugins>
                         <Listeners>
                             <AfterRender Handler="this.plugins[0].dragZone.getDragText = getDragDropText;" Delay="1" />
-                            <Drop Handler="var dropOn = overModel ? ' ' + dropPosition + ' ' + overModel.get('UserName') : ' on empty view'; 
-                                               Ext.net.Notification.show({title:'Drag from right to left', html:'Dropped ' + data.records[0].get('UserName') + dropOn});" />
+                            <Drop Handler="var dropOn = overModel ? ' ' + dropPosition + ' ' + overModel.get('UserName') : ' on empty view';                                                
+                                               App.direct.grdUserOfServiceUnit_Drop(data.records[0].get('UserName'));" />
                         </Listeners>
                     </ext:GridView>
                 </View>

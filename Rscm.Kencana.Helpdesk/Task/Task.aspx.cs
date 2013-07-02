@@ -30,8 +30,9 @@ namespace Rscm.Kencana.Helpdesk.Task
                 this.storeStatus.DataSource = new object[]
                 {
                     new object[] {"New", "New"},
-                    new object[] {"Finished","Finished"},
-                    new object[] {"Cancelled", "Cancelled"}
+                    new object[] {"Resolved","Resolved"},
+                    new object[] {"Cancelled", "Cancelled"},
+                    new object[] {"On Hold", "On Hold"}
                 };
                     this.storeStatus.DataBind();
                     this.cmbStatus.SetRawValue("New");                    
@@ -41,13 +42,40 @@ namespace Rscm.Kencana.Helpdesk.Task
         [DirectMethod]
         public void txtSearch_Change()
         {
- 
+            //if (string.IsNullOrEmpty(cmbStatus.SelectedItem.Value))
+            //    return;
+
+            //ADefHelpDeskTasksQuery t = new ADefHelpDeskTasksQuery("a");
+            //ADefHelpDeskTaskDetailsQuery tD = new ADefHelpDeskTaskDetailsQuery("b");
+            //ADefHelpDeskUsersQuery u = new ADefHelpDeskUsersQuery("c");
+            //t.Select(t.TaskID, t.Status, t.DueDate, t.CreatedDate, t.AssignedRoleID, t.Description, t.RequesterUserID, t.RequesterName, u.Username);           
+            //t.Where(t.Status.Like("%"+ cmbStatus.SelectedItem.Value +"%"));
+            //t.Where(t.Description.Like("%" + txtSearch.Text + "%"));
+            //t.InnerJoin(u).On(t.AssignedRoleID == u.UserID);
+            //t.es.Distinct = true;            
+            //DataTable dTask = t.LoadDataTable();
+            //storeTask.DataSource = dTask;
+            //storeTask.DataBind();
         }
 
         [DirectMethod]
         public void btnSearch_Click()
         {
-            
+            if (string.IsNullOrEmpty(cmbStatus.SelectedItem.Value))
+                return;
+
+            ADefHelpDeskTasksQuery t = new ADefHelpDeskTasksQuery("a");
+            ADefHelpDeskTaskDetailsQuery tD = new ADefHelpDeskTaskDetailsQuery("b");
+            ADefHelpDeskUsersQuery u = new ADefHelpDeskUsersQuery("c");
+            t.Select(t.TaskID, t.Status, t.DueDate, t.CreatedDate, t.AssignedRoleID, t.Description, t.RequesterUserID, t.RequesterName, u.Username);
+            t.Where(t.Status.Like("%" + cmbStatus.SelectedItem.Value + "%") && t.Description.Like("%" + txtSearch.Text + "%"));            
+            t.InnerJoin(u).On(t.AssignedRoleID == u.UserID);
+            t.es.Distinct = true;
+            DataTable dTask = t.LoadDataTable();
+            this.grdTask.Store.Primary.DataSource = dTask;
+            this.grdTask.Store.Primary.DataBind();
+            storeTask.DataSource = dTask;
+            storeTask.DataBind();
         }
 
         [DirectMethod]

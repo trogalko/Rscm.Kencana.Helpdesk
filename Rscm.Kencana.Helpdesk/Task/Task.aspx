@@ -17,9 +17,7 @@
             <ext:GridPanel runat="server" ID="grdTask">
                 <Store>
                     <ext:Store ID="storeTask" runat="server" RemoteSort="false" RemotePaging="false" AutoLoad="true" OnReadData="storeTask_ReadData" PageSize="10">
-                        <Proxy>
-                            <ext:PageProxy />
-                        </Proxy>
+                        
                         <Model>
                             <ext:Model runat="server" IDProperty="TaskID">
                                 <Fields>
