@@ -23,6 +23,19 @@ namespace Rscm.Kencana.Helpdesk.Task
             foreach (ADefHelpDeskUsers uuu in uuC)
             {
                 Session["UserID"] = uuu.UserID;
+                Session["ServiceUnitID"] = string.Empty;
+                ADefHelpDeskUserUserGroupQuery ug = new ADefHelpDeskUserUserGroupQuery("a");
+                ADefHelpDeskUserUserGroupCollection ugC = new ADefHelpDeskUserUserGroupCollection();
+                ug.SelectAll().Where(ug.UserID == username);
+                ug.es.Top = 1;
+                ugC.Load(ug);
+                if (ugC.Count > 0)
+                {
+                    foreach (ADefHelpDeskUserUserGroup uug in ugC)
+                    {
+                        Session["ServiceUnitID"] = uug.UserServiceUnitID;
+                    }
+                }
             }
             
             if (!X.IsAjaxRequest)

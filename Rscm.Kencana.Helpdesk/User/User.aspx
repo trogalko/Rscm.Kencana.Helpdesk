@@ -78,7 +78,7 @@
                         <Listeners>
                             <AfterRender Handler="this.plugins[0].dragZone.getDragText = getDragDropText;" Delay="1" />
                             <Drop Handler="var dropOn = overModel ? ' ' + dropPosition + ' ' + overModel.get('UserName') : ' on empty view'; 
-                                               Ext.net.Notification.show({title:'Drag from right to left', html:'Dropped ' + data.records[0].get('UserName') + dropOn});" />
+                                               App.direct.grdUser_Drop(data.records[0].get('UserID'));" />
                         </Listeners>
                     </ext:GridView>
                 </View>
@@ -114,7 +114,7 @@
                         <Listeners>
                             <AfterRender Handler="this.plugins[0].dragZone.getDragText = getDragDropText;" Delay="1" />
                             <Drop Handler="var dropOn = overModel ? ' ' + dropPosition + ' ' + overModel.get('UserName') : ' on empty view';                                                
-                                               App.direct.grdUserOfServiceUnit_Drop(data.records[0].get('UserName'));" />
+                                               App.direct.grdUserOfServiceUnit_Drop(data.records[0].get('UserID'));" />
                         </Listeners>
                     </ext:GridView>
                 </View>

@@ -83,7 +83,7 @@ namespace Rscm.Kencana.Helpdesk.User
             if (rmSU.SelectedRows.Count > 0)
             {
                 ServiceUnitID = rmSU.SelectedRow.RecordID;
-                
+                Session["ServiceUnitID"] = ServiceUnitID;
             }
 
             MessageBus.Default.Publish("grdServiceUnit_Select", ServiceUnitID);
@@ -101,9 +101,15 @@ namespace Rscm.Kencana.Helpdesk.User
             storeUser.DataBind();
 
             //Select all user that belong to selected service unit
-            ADefHelpDeskUserUserGroupCollection userSelectedSU = new ADefHelpDeskUserUserGroupCollection();
-            userSelectedSU.Query.SelectAll().Where(userSelectedSU.Query.UserServiceUnitID == ServiceUnitID);
-            DataTable dtUSU = userSelectedSU.Query.LoadDataTable();
+            ADefHelpDeskUsersQuery user = new ADefHelpDeskUsersQuery("uu");
+            ADefHelpDeskUserUserGroupQuery usergroup = new ADefHelpDeskUserUserGroupQuery("uugg");
+            usergroup.Select(usergroup.UserID, usergroup.UserServiceUnitID, user.FirstName.As("UserName"))
+                .Where(usergroup.UserServiceUnitID == ServiceUnitID)
+                .InnerJoin(user).On(usergroup.UserID == user.Username);
+            //ADefHelpDeskUserUserGroupCollection userSelectedSU = new ADefHelpDeskUserUserGroupCollection();
+            //userSelectedSU.Query.SelectAll().Where(userSelectedSU.Query.UserServiceUnitID == ServiceUnitID);
+            //DataTable dtUSU = userSelectedSU.Query.LoadDataTable();
+            DataTable dtUSU = usergroup.LoadDataTable();
             storeUserOfServiceUnit.DataSource = dtUSU;
             storeUserOfServiceUnit.DataBind();
         }
@@ -134,11 +140,32 @@ namespace Rscm.Kencana.Helpdesk.User
         }
 
         [DirectMethod]
-        public void grdUserOfServiceUnit_Drop(string UserName)
+        public void grdUserOfServiceUnit_Drop(string UserID)
         {
+            if (Session["ServiceUnitID"] == null)
+                return;
+            string ServiceUnitID = Session["ServiceUnitID"].ToString().Trim();
             ADefHelpDeskUserUserGroup ug = new ADefHelpDeskUserUserGroup();
-            
-            X.Msg.Notify("Info", UserName).Show();
+            if (!ug.LoadByPrimaryKey(UserID, ServiceUnitID))
+            {
+                ug.UserID = UserID;
+                ug.UserServiceUnitID = ServiceUnitID;
+                ug.Save();
+            }
+        }
+
+        [DirectMethod]
+        public void grdUser_Drop(string UserID)
+        {
+            if (Session["ServiceUnitID"] == null)
+                return;
+            string ServiceUnitID = Session["ServiceUnitID"].ToString().Trim();
+            ADefHelpDeskUserUserGroup ug = new ADefHelpDeskUserUserGroup();
+            if (ug.LoadByPrimaryKey(UserID, ServiceUnitID))
+            {
+                ug.MarkAsDeleted();
+                ug.Save();
+            }
         }
     }
 }
