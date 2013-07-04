@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rscm.Kencana.Helpdesk.BusinessObjects;
+using Ext.Net;
 
 namespace Rscm.Kencana.Helpdesk.Account
 {
@@ -72,6 +73,23 @@ namespace Rscm.Kencana.Helpdesk.Account
                                 a.Save(); 
                             }
                         }
+                    }
+                    //Get user service unit
+                    ADefHelpDeskUserUserGroupQuery ugQ = new ADefHelpDeskUserUserGroupQuery("a");
+                    ADefHelpDeskUserUserGroupCollection ugC = new ADefHelpDeskUserUserGroupCollection();
+                    ugQ.SelectAll().Where(ugQ.UserID == userName).es.Top = 1;
+                    ugC.Load(ugQ);
+                    if (ugC.Count == 1)
+                    {
+                        foreach (ADefHelpDeskUserUserGroup ug in ugC)
+                        {
+                            Session["ServiceUnit"] = ug.UserServiceUnitID;
+                        }
+                    }
+                    else
+                    {
+                        X.Msg.Notify("Error", "This user has not been registered to any service unit").Show();
+                        return false;
                     }
                     return true;
                 }
