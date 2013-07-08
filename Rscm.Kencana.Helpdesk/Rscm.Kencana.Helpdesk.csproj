@@ -48,10 +48,12 @@
     <Reference Include="EntitySpaces.SqlClientProvider">
       <HintPath>..\Dlls\EntitySpaces.SqlClientProvider.dll</HintPath>
     </Reference>
-    <Reference Include="Ext.Net">
+    <Reference Include="Ext.Net, Version=2.2.0.40838, Culture=neutral, PublicKeyToken=2e12ce3d0176cd87, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dlls\Ext.Net.dll</HintPath>
     </Reference>
-    <Reference Include="Ext.Net.Utilities">
+    <Reference Include="Ext.Net.Utilities, Version=2.2.0.0, Culture=neutral, PublicKeyToken=2c34ac34702a3c23, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dlls\Ext.Net.Utilities.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />

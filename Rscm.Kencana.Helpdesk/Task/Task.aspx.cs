@@ -81,7 +81,14 @@ namespace Rscm.Kencana.Helpdesk.Task
             ADefHelpDeskTaskDetailsQuery tD = new ADefHelpDeskTaskDetailsQuery("b");
             ADefHelpDeskUsersQuery u = new ADefHelpDeskUsersQuery("c");
             t.Select(t.TaskID, t.Status, t.DueDate, t.CreatedDate, t.AssignedRoleID, t.Description, t.RequesterUserID, t.RequesterName, u.Username);
-            t.Where(t.Status.Like("%" + cmbStatus.SelectedItem.Value + "%") && t.Description.Like("%" + txtSearch.Text + "%"));            
+            //t.Where(t.Status.Like("%" + cmbStatus.SelectedItem.Value + "%") && t.Description.Like("%" + txtSearch.Text + "%") && (t.RequesterEmail == Session["ServiceUnit"].ToString() | t.RequesterPhone == Session["ServiceUnit"].ToString()));
+            if (Session["ServiceUnit"] != null)
+            {
+                if (!(Session["ServiceUnit"].ToString() == "HIT" || Session["ServiceUnit"].ToString() == "IT"))
+                {
+                    t.Where(t.Status.Like("%" + cmbStatus.SelectedItem.Value + "%") && t.Description.Like("%" + txtSearch.Text + "%") && (t.RequesterEmail == Session["ServiceUnit"].ToString() | t.RequesterPhone == Session["ServiceUnit"].ToString()));
+                }
+            } 
             t.InnerJoin(u).On(t.AssignedRoleID == u.UserID);
             t.es.Distinct = true;
             DataTable dTask = t.LoadDataTable();
@@ -124,6 +131,13 @@ namespace Rscm.Kencana.Helpdesk.Task
             t.Select(t.TaskID, t.Status, t.DueDate, t.CreatedDate, t.AssignedRoleID, t.Description, t.RequesterUserID, t.RequesterName,u.Username);
                 //tD.DetailID,tD.DetailType,tD.UserID,tD.InsertDate,tD.Description.As("Comment"),tD.StartTime,tD.StopTime,u.Username);
             //t.RightJoin(tD).On(t.TaskID == tD.TaskID);
+            if (Session["ServiceUnit"] != null)
+            {
+                if (!(Session["ServiceUnit"].ToString() == "HIT" || Session["ServiceUnit"].ToString() == "IT"))
+                {
+                    t.Where(t.RequesterEmail == Session["ServiceUnit"].ToString() | t.RequesterPhone == Session["ServiceUnit"].ToString());
+                }                
+            }            
             t.InnerJoin(u).On(t.AssignedRoleID == u.UserID);
             t.es.Distinct = true;
             //t.OrderBy(t.TaskID.Ascending);
@@ -181,7 +195,34 @@ namespace Rscm.Kencana.Helpdesk.Task
         [DirectMethod]
         public void grdTask_Confirm(string TaskID)
         {
-            X.Msg.Alert("Confirm as Finished", TaskID).Show();
+            int taskID = 0;
+            if (!int.TryParse(TaskID, out taskID))
+                taskID = 0;
+            ADefHelpDeskTasks t = new ADefHelpDeskTasks();
+            if (t.LoadByPrimaryKey(taskID))
+            {
+                if (t.Status == "Resolved" || t.Status == "Cancelled" || t.Status == "OnHold")
+                {
+                    X.Msg.Notify("Info", "Unable to mark as finished, either task already confirmed or cancelled").Show();
+                }
+                if (Session["ServiceUnit"].ToString() == "HIT" || Session["ServiceUnit"].ToString() == "IT")
+                {
+                    t.Status = "Resolved";
+                    t.Save();
+                    X.Msg.Show(new MessageBoxConfig
+                    {
+                        Title = "Success",
+                        Message = "Request Confirmed",
+                        Buttons = MessageBox.Button.OK,
+                        Icon = MessageBox.Icon.INFO,
+                        AnimEl = this.grdTask.ClientID
+                    });
+                    //Refresh GridPanel
+                    MessageBus.Default.Publish("grdTask_Refresh");  
+                }
+                else
+                    X.Msg.Notify("Error", "You don not have the privileges to confirm this task").Show();
+            }            
         }
 
         [DirectMethod]
@@ -193,28 +234,33 @@ namespace Rscm.Kencana.Helpdesk.Task
             {
                 if (t.LoadByPrimaryKey(taskID))
                 {
-                    if (t.Status == "Resolved")
+                    if (Session["ServiceUnit"].ToString() == "HIT" || Session["ServiceUnit"].ToString() == "IT")
                     {
-                        X.Msg.Alert("Error", "This request has been resolved").Show();
-                        return;
+                        if (t.Status == "Resolved")
+                        {
+                            X.Msg.Alert("Error", "This request has been resolved").Show();
+                            return;
+                        }
+                        if (t.Status == "Cancelled")
+                        {
+                            X.Msg.Alert("Error", "This request has been cancelled").Show();
+                            return;
+                        }
+                        t.Status = "Cancelled";
+                        t.Save();
+                        X.Msg.Show(new MessageBoxConfig
+                        {
+                            Title = "Success",
+                            Message = "Request Cancelled",
+                            Buttons = MessageBox.Button.OK,
+                            Icon = MessageBox.Icon.INFO,
+                            AnimEl = this.grdTask.ClientID
+                        });
+                        //Refresh GridPanel
+                        MessageBus.Default.Publish("grdTask_Refresh");
                     }
-                    if (t.Status == "Cancelled")
-                    {
-                        X.Msg.Alert("Error", "This request has been cancelled").Show();
-                        return;
-                    }
-                    t.Status = "Cancelled";
-                    t.Save();
-                    X.Msg.Show(new MessageBoxConfig
-                    {
-                        Title = "Success",
-                        Message = "Request Cancelled",
-                        Buttons = MessageBox.Button.OK,
-                        Icon = MessageBox.Icon.INFO,
-                        AnimEl = this.grdTask.ClientID
-                    });
-                    //Refresh GridPanel
-                    MessageBus.Default.Publish("grdTask_Refresh");                    
+                    else
+                        X.Msg.Notify("Error", "You don not have the privileges to cancell this task").Show();
                 }
             }
         }

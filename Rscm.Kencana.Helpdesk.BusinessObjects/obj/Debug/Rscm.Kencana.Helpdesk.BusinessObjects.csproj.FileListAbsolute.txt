@@ -37,4 +37,3 @@ D:\Github\BizLiven\Rscm.Kencana.Helpdesk\Rscm.Kencana.Helpdesk.BusinessObjects\b
 D:\Github\BizLiven\Rscm.Kencana.Helpdesk\Rscm.Kencana.Helpdesk.BusinessObjects\bin\Debug\EntitySpaces.SqlClientProvider.dll
 D:\Github\BizLiven\Rscm.Kencana.Helpdesk\Rscm.Kencana.Helpdesk.BusinessObjects\obj\Debug\Rscm.Kencana.Helpdesk.BusinessObjects.dll
 D:\Github\BizLiven\Rscm.Kencana.Helpdesk\Rscm.Kencana.Helpdesk.BusinessObjects\obj\Debug\Rscm.Kencana.Helpdesk.BusinessObjects.pdb
-D:\Github\BizLiven\Rscm.Kencana.Helpdesk\Rscm.Kencana.Helpdesk.BusinessObjects\obj\Debug\Rscm.Kencana.Helpdesk.BusinessObjects.csprojResolveAssemblyReference.cache
