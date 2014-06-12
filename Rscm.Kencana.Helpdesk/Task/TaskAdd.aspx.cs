@@ -14,16 +14,19 @@ namespace Rscm.Kencana.Helpdesk.Task
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Request.QueryString["isnew"] == null)
-                Response.Redirect("~/Default.aspx");
-            //X.Js.Call("onWinClose");  
-            if (!X.IsAjaxRequest)
+            if (!IsPostBack)
             {
-                ServiceUnitQuery sQ = new ServiceUnitQuery("a");
-                sQ.SelectAll().Where(sQ.IsActive == true);
-                sQ.es2.Connection.Name = "KENCANA";                                
-                storeSU.DataSource = sQ.LoadDataTable();
-                storeSU.DataBind();
+                if (Request.QueryString["isnew"] == null)
+                    Response.Redirect("~/404.aspx");
+                //X.Js.Call("onWinClose");  
+                if (!X.IsAjaxRequest)
+                {
+                    ServiceUnitQuery sQ = new ServiceUnitQuery("a");
+                    sQ.SelectAll().Where(sQ.IsActive == true);
+                    sQ.es2.Connection.Name = "KENCANA";
+                    storeSU.DataSource = sQ.LoadDataTable();
+                    storeSU.DataBind();
+                }
             }
         }
 
@@ -50,8 +53,8 @@ namespace Rscm.Kencana.Helpdesk.Task
             //Password Ticket            
             string tikPass = Guid.NewGuid().ToString();
             t.TicketPassword = tikPass;
-            t.RequesterEmail = Session["ServiceUnit"].ToString().Trim();
-            t.RequesterPhone = cmbServiceUnit.SelectedItem.Value;
+            t.RequesterEmail = Session["ServiceUnitID"].ToString().Trim(); //RequesterEmail = the requestor service unit
+            t.RequesterPhone = cmbServiceUnit.SelectedItem.Value; //RequesterPhone = the service unit which take charge of the request
             //Get username ID
             ADefHelpDeskUsersQuery uq = new ADefHelpDeskUsersQuery("a");
             ADefHelpDeskUsersCollection uc = new ADefHelpDeskUsersCollection();

@@ -13,6 +13,17 @@ namespace Rscm.Kencana.Helpdesk
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!IsPostBack)
+            {
+                if (Session["ServiceUnitID"] == null)
+                {
+                    Session.Abandon();
+                    Session.RemoveAll();
+                    FormsAuthentication.SignOut();
+                    //FormsAuthentication.RedirectToLoginPage();
+                }
+            }
+            
             this.Page.Title = "Helpdesk RSCM Kencana V1.0";
             LoginName loginName = HeadLoginView.FindControl("HeadLoginName") as LoginName;
             if (loginName != null && Session != null)           

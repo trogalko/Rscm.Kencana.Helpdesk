@@ -8,7 +8,7 @@
 ===============================================================================
 EntitySpaces Version : 2012.1.0930.0
 EntitySpaces Driver  : SQL
-Date Generated       : 5/15/2013 10:58:44 AM
+Date Generated       : 6/11/2014 9:33:46 AM
 ===============================================================================
 */
 
@@ -514,6 +514,86 @@ namespace Rscm.Kencana.Helpdesk.BusinessObjects
 			}
 		}		
 		
+		/// <summary>
+		/// Maps to ADefHelpDesk_Tasks.ConfirmAsFinishDate
+		/// </summary>
+		[DataMember(EmitDefaultValue=false)]
+		virtual public System.DateTime? ConfirmAsFinishDate
+		{
+			get
+			{
+				return base.GetSystemDateTime(ADefHelpDeskTasksMetadata.ColumnNames.ConfirmAsFinishDate);
+			}
+			
+			set
+			{
+				if(base.SetSystemDateTime(ADefHelpDeskTasksMetadata.ColumnNames.ConfirmAsFinishDate, value))
+				{
+					OnPropertyChanged(ADefHelpDeskTasksMetadata.PropertyNames.ConfirmAsFinishDate);
+				}
+			}
+		}		
+		
+		/// <summary>
+		/// Maps to ADefHelpDesk_Tasks.CancelledDate
+		/// </summary>
+		[DataMember(EmitDefaultValue=false)]
+		virtual public System.DateTime? CancelledDate
+		{
+			get
+			{
+				return base.GetSystemDateTime(ADefHelpDeskTasksMetadata.ColumnNames.CancelledDate);
+			}
+			
+			set
+			{
+				if(base.SetSystemDateTime(ADefHelpDeskTasksMetadata.ColumnNames.CancelledDate, value))
+				{
+					OnPropertyChanged(ADefHelpDeskTasksMetadata.PropertyNames.CancelledDate);
+				}
+			}
+		}		
+		
+		/// <summary>
+		/// Maps to ADefHelpDesk_Tasks.ApprovedByRequestorID
+		/// </summary>
+		[DataMember(EmitDefaultValue=false)]
+		virtual public System.Int32? ApprovedByRequestorID
+		{
+			get
+			{
+				return base.GetSystemInt32(ADefHelpDeskTasksMetadata.ColumnNames.ApprovedByRequestorID);
+			}
+			
+			set
+			{
+				if(base.SetSystemInt32(ADefHelpDeskTasksMetadata.ColumnNames.ApprovedByRequestorID, value))
+				{
+					OnPropertyChanged(ADefHelpDeskTasksMetadata.PropertyNames.ApprovedByRequestorID);
+				}
+			}
+		}		
+		
+		/// <summary>
+		/// Maps to ADefHelpDesk_Tasks.ApprovedByRequestorDateTime
+		/// </summary>
+		[DataMember(EmitDefaultValue=false)]
+		virtual public System.DateTime? ApprovedByRequestorDateTime
+		{
+			get
+			{
+				return base.GetSystemDateTime(ADefHelpDeskTasksMetadata.ColumnNames.ApprovedByRequestorDateTime);
+			}
+			
+			set
+			{
+				if(base.SetSystemDateTime(ADefHelpDeskTasksMetadata.ColumnNames.ApprovedByRequestorDateTime, value))
+				{
+					OnPropertyChanged(ADefHelpDeskTasksMetadata.PropertyNames.ApprovedByRequestorDateTime);
+				}
+			}
+		}		
+		
 		#endregion	
 
 		#region .str() Properties
@@ -551,7 +631,11 @@ namespace Rscm.Kencana.Helpdesk.BusinessObjects
 						case "RequesterName": this.str().RequesterName = (string)value; break;							
 						case "RequesterEmail": this.str().RequesterEmail = (string)value; break;							
 						case "RequesterPhone": this.str().RequesterPhone = (string)value; break;							
-						case "EstimatedHours": this.str().EstimatedHours = (string)value; break;
+						case "EstimatedHours": this.str().EstimatedHours = (string)value; break;							
+						case "ConfirmAsFinishDate": this.str().ConfirmAsFinishDate = (string)value; break;							
+						case "CancelledDate": this.str().CancelledDate = (string)value; break;							
+						case "ApprovedByRequestorID": this.str().ApprovedByRequestorID = (string)value; break;							
+						case "ApprovedByRequestorDateTime": this.str().ApprovedByRequestorDateTime = (string)value; break;
 					}
 				}
 				else
@@ -619,6 +703,34 @@ namespace Rscm.Kencana.Helpdesk.BusinessObjects
 							if (value == null || value is System.Int32)
 								this.EstimatedHours = (System.Int32?)value;
 								OnPropertyChanged(ADefHelpDeskTasksMetadata.PropertyNames.EstimatedHours);
+							break;
+						
+						case "ConfirmAsFinishDate":
+						
+							if (value == null || value is System.DateTime)
+								this.ConfirmAsFinishDate = (System.DateTime?)value;
+								OnPropertyChanged(ADefHelpDeskTasksMetadata.PropertyNames.ConfirmAsFinishDate);
+							break;
+						
+						case "CancelledDate":
+						
+							if (value == null || value is System.DateTime)
+								this.CancelledDate = (System.DateTime?)value;
+								OnPropertyChanged(ADefHelpDeskTasksMetadata.PropertyNames.CancelledDate);
+							break;
+						
+						case "ApprovedByRequestorID":
+						
+							if (value == null || value is System.Int32)
+								this.ApprovedByRequestorID = (System.Int32?)value;
+								OnPropertyChanged(ADefHelpDeskTasksMetadata.PropertyNames.ApprovedByRequestorID);
+							break;
+						
+						case "ApprovedByRequestorDateTime":
+						
+							if (value == null || value is System.DateTime)
+								this.ApprovedByRequestorDateTime = (System.DateTime?)value;
+								OnPropertyChanged(ADefHelpDeskTasksMetadata.PropertyNames.ApprovedByRequestorDateTime);
 							break;
 					
 
@@ -893,6 +1005,66 @@ namespace Rscm.Kencana.Helpdesk.BusinessObjects
 					else entity.EstimatedHours = Convert.ToInt32(value);
 				}
 			}
+				
+			public System.String ConfirmAsFinishDate
+			{
+				get
+				{
+					System.DateTime? data = entity.ConfirmAsFinishDate;
+					return (data == null) ? String.Empty : Convert.ToString(data);
+				}
+
+				set
+				{
+					if (value == null || value.Length == 0) entity.ConfirmAsFinishDate = null;
+					else entity.ConfirmAsFinishDate = Convert.ToDateTime(value);
+				}
+			}
+				
+			public System.String CancelledDate
+			{
+				get
+				{
+					System.DateTime? data = entity.CancelledDate;
+					return (data == null) ? String.Empty : Convert.ToString(data);
+				}
+
+				set
+				{
+					if (value == null || value.Length == 0) entity.CancelledDate = null;
+					else entity.CancelledDate = Convert.ToDateTime(value);
+				}
+			}
+				
+			public System.String ApprovedByRequestorID
+			{
+				get
+				{
+					System.Int32? data = entity.ApprovedByRequestorID;
+					return (data == null) ? String.Empty : Convert.ToString(data);
+				}
+
+				set
+				{
+					if (value == null || value.Length == 0) entity.ApprovedByRequestorID = null;
+					else entity.ApprovedByRequestorID = Convert.ToInt32(value);
+				}
+			}
+				
+			public System.String ApprovedByRequestorDateTime
+			{
+				get
+				{
+					System.DateTime? data = entity.ApprovedByRequestorDateTime;
+					return (data == null) ? String.Empty : Convert.ToString(data);
+				}
+
+				set
+				{
+					if (value == null || value.Length == 0) entity.ApprovedByRequestorDateTime = null;
+					else entity.ApprovedByRequestorDateTime = Convert.ToDateTime(value);
+				}
+			}
 			
 
 			private esADefHelpDeskTasks entity;
@@ -1066,6 +1238,10 @@ namespace Rscm.Kencana.Helpdesk.BusinessObjects
 				case "RequesterEmail": return this.RequesterEmail;
 				case "RequesterPhone": return this.RequesterPhone;
 				case "EstimatedHours": return this.EstimatedHours;
+				case "ConfirmAsFinishDate": return this.ConfirmAsFinishDate;
+				case "CancelledDate": return this.CancelledDate;
+				case "ApprovedByRequestorID": return this.ApprovedByRequestorID;
+				case "ApprovedByRequestorDateTime": return this.ApprovedByRequestorDateTime;
 
                 default: return null;
             }
@@ -1153,6 +1329,26 @@ namespace Rscm.Kencana.Helpdesk.BusinessObjects
 		public esQueryItem EstimatedHours
 		{
 			get { return new esQueryItem(this, ADefHelpDeskTasksMetadata.ColumnNames.EstimatedHours, esSystemType.Int32); }
+		} 
+		
+		public esQueryItem ConfirmAsFinishDate
+		{
+			get { return new esQueryItem(this, ADefHelpDeskTasksMetadata.ColumnNames.ConfirmAsFinishDate, esSystemType.DateTime); }
+		} 
+		
+		public esQueryItem CancelledDate
+		{
+			get { return new esQueryItem(this, ADefHelpDeskTasksMetadata.ColumnNames.CancelledDate, esSystemType.DateTime); }
+		} 
+		
+		public esQueryItem ApprovedByRequestorID
+		{
+			get { return new esQueryItem(this, ADefHelpDeskTasksMetadata.ColumnNames.ApprovedByRequestorID, esSystemType.Int32); }
+		} 
+		
+		public esQueryItem ApprovedByRequestorDateTime
+		{
+			get { return new esQueryItem(this, ADefHelpDeskTasksMetadata.ColumnNames.ApprovedByRequestorDateTime, esSystemType.DateTime); }
 		} 
 		
 		#endregion
@@ -1666,6 +1862,27 @@ namespace Rscm.Kencana.Helpdesk.BusinessObjects
 			c.IsNullable = true;
 			m_columns.Add(c);
 				
+			c = new esColumnMetadata(ADefHelpDeskTasksMetadata.ColumnNames.ConfirmAsFinishDate, 16, typeof(System.DateTime), esSystemType.DateTime);
+			c.PropertyName = ADefHelpDeskTasksMetadata.PropertyNames.ConfirmAsFinishDate;
+			c.IsNullable = true;
+			m_columns.Add(c);
+				
+			c = new esColumnMetadata(ADefHelpDeskTasksMetadata.ColumnNames.CancelledDate, 17, typeof(System.DateTime), esSystemType.DateTime);
+			c.PropertyName = ADefHelpDeskTasksMetadata.PropertyNames.CancelledDate;
+			c.IsNullable = true;
+			m_columns.Add(c);
+				
+			c = new esColumnMetadata(ADefHelpDeskTasksMetadata.ColumnNames.ApprovedByRequestorID, 18, typeof(System.Int32), esSystemType.Int32);
+			c.PropertyName = ADefHelpDeskTasksMetadata.PropertyNames.ApprovedByRequestorID;
+			c.NumericPrecision = 10;
+			c.IsNullable = true;
+			m_columns.Add(c);
+				
+			c = new esColumnMetadata(ADefHelpDeskTasksMetadata.ColumnNames.ApprovedByRequestorDateTime, 19, typeof(System.DateTime), esSystemType.DateTime);
+			c.PropertyName = ADefHelpDeskTasksMetadata.PropertyNames.ApprovedByRequestorDateTime;
+			c.IsNullable = true;
+			m_columns.Add(c);
+				
 		}
 		#endregion	
 	
@@ -1708,6 +1925,10 @@ namespace Rscm.Kencana.Helpdesk.BusinessObjects
 			 public const string RequesterEmail = "RequesterEmail";
 			 public const string RequesterPhone = "RequesterPhone";
 			 public const string EstimatedHours = "EstimatedHours";
+			 public const string ConfirmAsFinishDate = "ConfirmAsFinishDate";
+			 public const string CancelledDate = "CancelledDate";
+			 public const string ApprovedByRequestorID = "ApprovedByRequestorID";
+			 public const string ApprovedByRequestorDateTime = "ApprovedByRequestorDateTime";
 		}
 		#endregion	
 		
@@ -1730,6 +1951,10 @@ namespace Rscm.Kencana.Helpdesk.BusinessObjects
 			 public const string RequesterEmail = "RequesterEmail";
 			 public const string RequesterPhone = "RequesterPhone";
 			 public const string EstimatedHours = "EstimatedHours";
+			 public const string ConfirmAsFinishDate = "ConfirmAsFinishDate";
+			 public const string CancelledDate = "CancelledDate";
+			 public const string ApprovedByRequestorID = "ApprovedByRequestorID";
+			 public const string ApprovedByRequestorDateTime = "ApprovedByRequestorDateTime";
 		}
 		#endregion	
 
@@ -1789,7 +2014,11 @@ namespace Rscm.Kencana.Helpdesk.BusinessObjects
 				meta.AddTypeMap("RequesterName", new esTypeMap("nvarchar", "System.String"));
 				meta.AddTypeMap("RequesterEmail", new esTypeMap("nvarchar", "System.String"));
 				meta.AddTypeMap("RequesterPhone", new esTypeMap("nvarchar", "System.String"));
-				meta.AddTypeMap("EstimatedHours", new esTypeMap("int", "System.Int32"));			
+				meta.AddTypeMap("EstimatedHours", new esTypeMap("int", "System.Int32"));
+				meta.AddTypeMap("ConfirmAsFinishDate", new esTypeMap("datetime", "System.DateTime"));
+				meta.AddTypeMap("CancelledDate", new esTypeMap("datetime", "System.DateTime"));
+				meta.AddTypeMap("ApprovedByRequestorID", new esTypeMap("int", "System.Int32"));
+				meta.AddTypeMap("ApprovedByRequestorDateTime", new esTypeMap("datetime", "System.DateTime"));			
 				
 				
 				

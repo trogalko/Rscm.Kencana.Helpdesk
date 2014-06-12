@@ -90,6 +90,11 @@
     <Content Include="Account\Login.aspx" />
     <Content Include="Account\Register.aspx" />
     <Content Include="Resources\css\bootstrap\bootstrap.css" />
+    <Content Include="Resources\Images\IMG_9442.JPG" />
+    <Content Include="Resources\Images\IMG_9576.JPG" />
+    <Content Include="Resources\Images\sunmid.jpg" />
+    <Content Include="Resources\Images\sunnight.jpg" />
+    <Content Include="Resources\Images\Sunrise.jpg" />
     <Content Include="Styles\Site.css" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
@@ -222,7 +227,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>13918</DevelopmentServerPort>
+          <DevelopmentServerPort>12133</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

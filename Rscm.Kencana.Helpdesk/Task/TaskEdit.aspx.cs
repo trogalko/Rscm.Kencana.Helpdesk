@@ -13,26 +13,29 @@ namespace Rscm.Kencana.Helpdesk.Task
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            int taskID = 0;            
-            if (Request.QueryString["isedit"] == null & Request.QueryString["TaskID"] == null)
-                Response.Redirect("~/404.aspx");
-            if(!int.TryParse(Request.QueryString["TaskID"].ToString(),out taskID))
-                taskID = 0;
-            Session["taskid"] = taskID;
-            ADefHelpDeskTasks t = new ADefHelpDeskTasks();  
-            if (!t.LoadByPrimaryKey(taskID))
-                Response.Redirect("~/404.aspx");
-            ADefHelpDeskTaskDetailsQuery tQ = new ADefHelpDeskTaskDetailsQuery("a");
-            ADefHelpDeskTaskDetailsCollection tC = new ADefHelpDeskTaskDetailsCollection();
-            tQ.SelectAll().Where(tQ.TaskID == taskID && tQ.DetailType == "Details");
-            tQ.es.Top = 1;
-            tC.Load(tQ);
-            //Fill the Form
-            txtTitle.Text = t.Description;
-            if (tC.Count > 0)
+            if (!IsPostBack)
             {
-                foreach (ADefHelpDeskTaskDetails aT in tC)
-                    txtDesc.Text = aT.Description;
+                int taskID = 0;
+                if (Request.QueryString["isedit"] == null & Request.QueryString["TaskID"] == null)
+                    Response.Redirect("~/404.aspx");
+                if (!int.TryParse(Request.QueryString["TaskID"].ToString(), out taskID))
+                    taskID = 0;
+                Session["taskid"] = taskID;
+                ADefHelpDeskTasks t = new ADefHelpDeskTasks();
+                if (!t.LoadByPrimaryKey(taskID))
+                    Response.Redirect("~/404.aspx");
+                ADefHelpDeskTaskDetailsQuery tQ = new ADefHelpDeskTaskDetailsQuery("a");
+                ADefHelpDeskTaskDetailsCollection tC = new ADefHelpDeskTaskDetailsCollection();
+                tQ.SelectAll().Where(tQ.TaskID == taskID && tQ.DetailType == "Details");
+                tQ.es.Top = 1;
+                tC.Load(tQ);
+                //Fill the Form
+                txtTitle.Text = t.Description;
+                if (tC.Count > 0)
+                {
+                    foreach (ADefHelpDeskTaskDetails aT in tC)
+                        txtDesc.Text = aT.Description;
+                }
             }
         }
 

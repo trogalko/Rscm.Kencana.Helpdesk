@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using Rscm.Kencana.Helpdesk.BusinessObjects;
 using Ext.Net;
 using System.Data;
+using System.Web.Security;
 
 namespace Rscm.Kencana.Helpdesk.Task
 {
@@ -14,29 +15,30 @@ namespace Rscm.Kencana.Helpdesk.Task
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            
             string username = HttpContext.Current.User.Identity.Name;            
             ADefHelpDeskUsersQuery uu = new ADefHelpDeskUsersQuery();
             ADefHelpDeskUsersCollection uuC = new ADefHelpDeskUsersCollection();
             uu.SelectAll().Where(uu.Username == username);
             uu.es.Top = 1;
             uuC.Load(uu);
-            foreach (ADefHelpDeskUsers uuu in uuC)
-            {
-                Session["UserID"] = uuu.UserID;
-                Session["ServiceUnitID"] = string.Empty;
-                ADefHelpDeskUserUserGroupQuery ug = new ADefHelpDeskUserUserGroupQuery("a");
-                ADefHelpDeskUserUserGroupCollection ugC = new ADefHelpDeskUserUserGroupCollection();
-                ug.SelectAll().Where(ug.UserID == username);
-                ug.es.Top = 1;
-                ugC.Load(ug);
-                if (ugC.Count > 0)
-                {
-                    foreach (ADefHelpDeskUserUserGroup uug in ugC)
-                    {
-                        Session["ServiceUnitID"] = uug.UserServiceUnitID;
-                    }
-                }
-            }
+            //foreach (ADefHelpDeskUsers uuu in uuC)
+            //{
+            //    Session["UserID"] = uuu.UserID;
+            //    Session["ServiceUnitID"] = string.Empty;
+            //    ADefHelpDeskUserUserGroupQuery ug = new ADefHelpDeskUserUserGroupQuery("a");
+            //    ADefHelpDeskUserUserGroupCollection ugC = new ADefHelpDeskUserUserGroupCollection();
+            //    ug.SelectAll().Where(ug.UserID == username);
+            //    ug.es.Top = 1;
+            //    ugC.Load(ug);
+            //    if (ugC.Count > 0)
+            //    {
+            //        foreach (ADefHelpDeskUserUserGroup uug in ugC)
+            //        {
+            //            Session["ServiceUnitID"] = uug.UserServiceUnitID;
+            //        }
+            //    }
+            //}
             
             if (!X.IsAjaxRequest)
             {
@@ -48,7 +50,9 @@ namespace Rscm.Kencana.Helpdesk.Task
                     new object[] {"On Hold", "On Hold"}
                 };
                     this.storeStatus.DataBind();
-                    this.cmbStatus.SetRawValue("New");                    
+                    this.cmbStatus.SetRawValue("New");
+                    StoreReadDataEventArgs ee = new StoreReadDataEventArgs();
+                    storeTask_ReadData(sender,ee);
             }
         }
 
@@ -76,20 +80,42 @@ namespace Rscm.Kencana.Helpdesk.Task
         {
             if (string.IsNullOrEmpty(cmbStatus.SelectedItem.Value))
                 return;
+            if (Session["ServiceUnitID"] == null)
+                return;
 
             ADefHelpDeskTasksQuery t = new ADefHelpDeskTasksQuery("a");
             ADefHelpDeskTaskDetailsQuery tD = new ADefHelpDeskTaskDetailsQuery("b");
             ADefHelpDeskUsersQuery u = new ADefHelpDeskUsersQuery("c");
-            t.Select(t.TaskID, t.Status, t.DueDate, t.CreatedDate, t.AssignedRoleID, t.Description, t.RequesterUserID, t.RequesterName, u.Username);
-            //t.Where(t.Status.Like("%" + cmbStatus.SelectedItem.Value + "%") && t.Description.Like("%" + txtSearch.Text + "%") && (t.RequesterEmail == Session["ServiceUnit"].ToString() | t.RequesterPhone == Session["ServiceUnit"].ToString()));
-            if (Session["ServiceUnit"] != null)
+            //RequesterEmail == Requestor Service Unit
+            //RequesterPhone == Destination Service Unit
+            //t.Select(t.TaskID, t.Status, t.DueDate, t.CreatedDate, t.AssignedRoleID, t.Description, t.RequesterUserID, t.RequesterName, u.Username);
+            t.Select(t.TaskID, t.Status, t.DueDate, t.CreatedDate,t.ConfirmAsFinishDate, t.AssignedRoleID, t.Description, t.RequesterUserID, t.RequesterName, t.RequesterEmail, t.RequesterPhone);
+            //t.Where(t.Status.Like("%" + cmbStatus.SelectedItem.Value + "%") && (t.RequesterEmail == Session["ServiceUnit"].ToString() || t.RequesterPhone == Session["ServiceUnit"].ToString()));
+            //t.Where(t.Status.Like("%" + cmbStatus.SelectedItem.Value + "%"));
+            if (!string.IsNullOrEmpty(txtSearch.Text.Trim()))
             {
-                if (!(Session["ServiceUnit"].ToString() == "HIT" || Session["ServiceUnit"].ToString() == "IT"))
+                t.Where(t.Description.Like("%" + txtSearch.Text + "%"));
+            }
+            //|| t.Description.Like("%" + txtSearch.Text + "%") || (t.RequesterEmail == Session["ServiceUnit"].ToString() | t.RequesterPhone == Session["ServiceUnit"].ToString()));
+            if (Session["ServiceUnitID"] != null)
+            {
+                if (!(Session["ServiceUnitID"].ToString() == "HIT" || Session["ServiceUnitID"].ToString() == "IT"))
                 {
-                    t.Where(t.Status.Like("%" + cmbStatus.SelectedItem.Value + "%") && t.Description.Like("%" + txtSearch.Text + "%") && (t.RequesterEmail == Session["ServiceUnit"].ToString() | t.RequesterPhone == Session["ServiceUnit"].ToString()));
+                    t.Where(t.Status.Like("%" + cmbStatus.SelectedItem.Value + "%") && t.Description.Like("%" + txtSearch.Text + "%") && (t.RequesterEmail == Session["ServiceUnitID"].ToString() | t.RequesterPhone == Session["ServiceUnitID"].ToString()));
                 }
-            } 
-            t.InnerJoin(u).On(t.AssignedRoleID == u.UserID);
+                else
+                {
+                    t.Where(t.Status.Like("%" + cmbStatus.SelectedItem.Value + "%"));
+                }
+            }
+            else
+            {
+                Session.Abandon();
+                Session.RemoveAll();
+                FormsAuthentication.SignOut();
+                FormsAuthentication.RedirectToLoginPage();
+            }
+            //t.InnerJoin(u).On(t.AssignedRoleID == u.UserID);
             t.es.Distinct = true;
             DataTable dTask = t.LoadDataTable();
             this.grdTask.Store.Primary.DataSource = dTask;
@@ -128,17 +154,22 @@ namespace Rscm.Kencana.Helpdesk.Task
             ADefHelpDeskTasksQuery t = new ADefHelpDeskTasksQuery("a");
             ADefHelpDeskTaskDetailsQuery tD = new ADefHelpDeskTaskDetailsQuery("b");
             ADefHelpDeskUsersQuery u = new ADefHelpDeskUsersQuery("c");
-            t.Select(t.TaskID, t.Status, t.DueDate, t.CreatedDate, t.AssignedRoleID, t.Description, t.RequesterUserID, t.RequesterName,u.Username);
+            t.Select(t.TaskID, t.Status, t.DueDate, t.CreatedDate,t.ConfirmAsFinishDate, t.AssignedRoleID, t.Description, t.RequesterUserID, t.RequesterName, t.RequesterEmail,t.RequesterPhone);
                 //tD.DetailID,tD.DetailType,tD.UserID,tD.InsertDate,tD.Description.As("Comment"),tD.StartTime,tD.StopTime,u.Username);
             //t.RightJoin(tD).On(t.TaskID == tD.TaskID);
-            if (Session["ServiceUnit"] != null)
+            if (Session["ServiceUnitID"] != null)
             {
-                if (!(Session["ServiceUnit"].ToString() == "HIT" || Session["ServiceUnit"].ToString() == "IT"))
+                if (!(Session["ServiceUnitID"].ToString() == "HIT" || Session["ServiceUnitID"].ToString() == "IT"))
                 {
-                    t.Where(t.RequesterEmail == Session["ServiceUnit"].ToString() | t.RequesterPhone == Session["ServiceUnit"].ToString());
-                }                
+                    t.Where(t.RequesterEmail == Session["ServiceUnitID"].ToString() | t.RequesterPhone == Session["ServiceUnitID"].ToString());
+                }
+                if (!X.IsAjaxRequest)
+                {
+                    t.Where(t.Status == "New");
+                }
+                
             }            
-            t.InnerJoin(u).On(t.AssignedRoleID == u.UserID);
+            //t.InnerJoin(u).On(t.AssignedRoleID == u.UserID);
             t.es.Distinct = true;
             //t.OrderBy(t.TaskID.Ascending);
             DataTable dTask = t.LoadDataTable();
@@ -157,7 +188,7 @@ namespace Rscm.Kencana.Helpdesk.Task
             ADefHelpDeskTasksQuery t = new ADefHelpDeskTasksQuery("a");
             ADefHelpDeskTaskDetailsQuery tD = new ADefHelpDeskTaskDetailsQuery("b");
             ADefHelpDeskUsersQuery u = new ADefHelpDeskUsersQuery("c");
-            t.Select(t.TaskID, t.Status, t.DueDate, t.CreatedDate, t.AssignedRoleID, t.Description, t.RequesterUserID, t.RequesterName,
+            t.Select(t.TaskID, t.Status, t.DueDate, t.CreatedDate,t.ConfirmAsFinishDate, t.AssignedRoleID, t.Description, t.RequesterUserID, t.RequesterName, t.RequesterEmail,t.RequesterPhone,
                 tD.DetailID, tD.DetailType, tD.UserID, tD.InsertDate, tD.Description.As("Comment"), tD.StartTime, tD.StopTime, u.Username);
             t.InnerJoin(tD).On(t.TaskID == tD.TaskID);
             t.InnerJoin(u).On(t.AssignedRoleID == u.UserID);
@@ -204,25 +235,82 @@ namespace Rscm.Kencana.Helpdesk.Task
                 if (t.Status == "Resolved" || t.Status == "Cancelled" || t.Status == "OnHold")
                 {
                     X.Msg.Notify("Info", "Unable to mark as finished, either task already confirmed or cancelled").Show();
+                    return;
                 }
-                if (Session["ServiceUnit"].ToString() == "HIT" || Session["ServiceUnit"].ToString() == "IT")
+                if (Session["ServiceUnitID"].ToString() == "HIT" || Session["ServiceUnitID"].ToString() == "IT" || Session["ServiceUnitID"].ToString() == t.RequesterPhone)
                 {
-                    t.Status = "Resolved";
-                    t.Save();
+                    Session["TaskID"] = taskID;
                     X.Msg.Show(new MessageBoxConfig
-                    {
-                        Title = "Success",
-                        Message = "Request Confirmed",
-                        Buttons = MessageBox.Button.OK,
-                        Icon = MessageBox.Icon.INFO,
-                        AnimEl = this.grdTask.ClientID
-                    });
-                    //Refresh GridPanel
-                    MessageBus.Default.Publish("grdTask_Refresh");  
+                        {
+                            Title = "Confirm?",
+                            Message = "Are You sure want to confirm as finished ?",
+                            Buttons = MessageBox.Button.YESNO,
+                            MessageBoxButtonsConfig = new MessageBoxButtonsConfig 
+                            {
+                                Yes = new MessageBoxButtonConfig
+                                {
+                                    Text = "Yes",
+                                    Handler = "App.direct.ConfirmAsFinished()"
+                                },
+                                No = new MessageBoxButtonConfig
+                                {
+                                    Text = "No",
+                                    Handler = "App.direct.CancelConfirmAsFinished()"
+                                }
+                            },
+                            AnimEl = this.grdTask.ClientID,
+                            Icon = MessageBox.Icon.QUESTION
+                        });
+
+                    //t.Status = "Resolved";
+                    //t.Save();
+                    //X.Msg.Show(new MessageBoxConfig
+                    //{
+                    //    Title = "Success",
+                    //    Message = "Request Confirmed",
+                    //    Buttons = MessageBox.Button.OK,
+                    //    Icon = MessageBox.Icon.INFO,
+                    //    AnimEl = this.grdTask.ClientID
+                    //});
+                    ////Refresh GridPanel
+                    //MessageBus.Default.Publish("grdTask_Refresh");  
                 }
                 else
                     X.Msg.Notify("Error", "You don not have the privileges to confirm this task").Show();
             }            
+        }
+
+        [DirectMethod]
+        public void ConfirmAsFinished()
+        {
+            int taskID = (int)Session["TaskID"];
+            ADefHelpDeskTasks t = new ADefHelpDeskTasks();
+            if (t.LoadByPrimaryKey(taskID))
+            {
+                t.ConfirmAsFinishDate = DateTime.Now;
+                t.Status = "Resolved";
+                t.Save();
+                X.Msg.Notify("Success", "Successfully confirmed as finished").Show();
+                //Refresh GridPanel
+                MessageBus.Default.Publish("grdTask_Refresh");
+            }
+        }
+
+        [DirectMethod]
+        public void CancelConfirmAsFinished()
+        {
+            //int taskID = (int)Session["TaskID"];
+            //ADefHelpDeskTasks t = new ADefHelpDeskTasks();
+            //if (t.LoadByPrimaryKey(taskID))
+            //{
+            //    t.ConfirmAsFinishDate = DateTime.Now;
+            //    t.Status = "Resolved";
+            //    t.Save();
+            //    X.Msg.Notify("Success", "Successfully confirmed as finished").Show();
+            //    //Refresh GridPanel
+            //    MessageBus.Default.Publish("grdTask_Refresh");
+            //}
+            return;
         }
 
         [DirectMethod]
@@ -234,7 +322,7 @@ namespace Rscm.Kencana.Helpdesk.Task
             {
                 if (t.LoadByPrimaryKey(taskID))
                 {
-                    if (Session["ServiceUnit"].ToString() == "HIT" || Session["ServiceUnit"].ToString() == "IT")
+                    if (Session["ServiceUnitID"].ToString() == "HIT" || Session["ServiceUnitID"].ToString() == "IT" || Session["ServiceUnitID"].ToString() == t.RequesterPhone)
                     {
                         if (t.Status == "Resolved")
                         {
@@ -261,6 +349,20 @@ namespace Rscm.Kencana.Helpdesk.Task
                     }
                     else
                         X.Msg.Notify("Error", "You don not have the privileges to cancell this task").Show();
+                }
+            }
+        }
+
+        [DirectMethod]
+        public void grdTask_ApproveByPic(string TaskID)
+        {
+            ADefHelpDeskTasks t = new ADefHelpDeskTasks();
+            int taskID = 0;
+            if (int.TryParse(TaskID, out taskID))
+            {
+                if (t.LoadByPrimaryKey(taskID))
+                {
+
                 }
             }
         }

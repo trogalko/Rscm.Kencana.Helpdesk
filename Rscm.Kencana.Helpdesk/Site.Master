@@ -6,6 +6,13 @@
 <head runat="server">
     <title></title>
     <link href="~/Styles/Site.css" rel="stylesheet" type="text/css" />
+     <script type="text/javascript" src="Scripts/jquery-1.4.1.min.js"></script>
+     <script>
+         $(function () {
+             $('.fadein img:gt(0)').hide();
+             setInterval(function () { $('.fadein :first-child').fadeOut().next('img').fadeIn().end().appendTo('.fadein'); }, 10000);
+         });
+    </script>
     <asp:ContentPlaceHolder ID="HeadContent" runat="server">
     </asp:ContentPlaceHolder>
 </head>
@@ -17,7 +24,7 @@
         <div class="header">
             <div class="title">
                 <h1>
-                    APLIKASI HELPDESK RSCM KENCANA V1.0
+                    APLIKASI HELPDESK RSCM KENCANA
                 </h1>
             </div>
             <div class="loginDisplay">
@@ -38,7 +45,7 @@
                 <asp:Menu ID="NavigationMenu" runat="server" CssClass="menu" EnableViewState="false" IncludeStyleBlock="false" Orientation="Horizontal">
                     <Items>
                         <asp:MenuItem NavigateUrl="~/Default.aspx" Text="Home"/>
-                        <asp:MenuItem NavigateUrl="~/About.aspx" Text="About"/>
+                        <%--<asp:MenuItem NavigateUrl="~/About.aspx" Text="About"/>--%>
                         <asp:MenuItem NavigateUrl="~/Task/Task.aspx" Text="Tasks" />
                     </Items>
                 </asp:Menu>

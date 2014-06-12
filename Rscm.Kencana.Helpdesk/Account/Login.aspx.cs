@@ -14,8 +14,8 @@ namespace Rscm.Kencana.Helpdesk.Account
         private AppUser _user = new AppUser();
         protected void Page_Load(object sender, EventArgs e)
         {
-            RegisterHyperLink.NavigateUrl = "Register.aspx?ReturnUrl=" + HttpUtility.UrlEncode(Request.QueryString["ReturnUrl"]);
-            LoginUser.Authenticate +=new AuthenticateEventHandler(LoginUser_Authenticate);
+            //RegisterHyperLink.NavigateUrl = "Register.aspx?ReturnUrl=" + HttpUtility.UrlEncode(Request.QueryString["ReturnUrl"]);
+            LoginUser.Authenticate +=new AuthenticateEventHandler(LoginUser_Authenticate);            
         }
 
         protected void LoginUser_Authenticate(object sender, System.Web.UI.WebControls.AuthenticateEventArgs e)
@@ -27,7 +27,7 @@ namespace Rscm.Kencana.Helpdesk.Account
             bool result = UserLogin(userName, password);
             if ((result))
             {
-                e.Authenticated = true;
+                e.Authenticated = true;                
             }
             else
             {
@@ -83,7 +83,7 @@ namespace Rscm.Kencana.Helpdesk.Account
                     {
                         foreach (ADefHelpDeskUserUserGroup ug in ugC)
                         {
-                            Session["ServiceUnit"] = ug.UserServiceUnitID;
+                            Session["ServiceUnitID"] = ug.UserServiceUnitID;
                         }
                     }
                     else
@@ -98,6 +98,12 @@ namespace Rscm.Kencana.Helpdesk.Account
             }
             else
                 return false;
+        }
+
+        protected void LoginUser_LoggedIn(object sender, EventArgs e)
+        {
+            if (Request.QueryString["ReturnUrl"] == null)
+                Response.Redirect("~/Default.aspx");
         }
     }
 }

@@ -90,11 +90,13 @@ namespace Rscm.Kencana.Helpdesk.User
 
             //Select all user that still unassigned
             ADefHelpDeskUserUserGroupQuery userGroupC = new ADefHelpDeskUserUserGroupQuery("ug");
+            ADefHelpDeskUserRolesCollection userGroupCol = new ADefHelpDeskUserRolesCollection();
             userGroupC.Select(userGroupC.UserID);
+            //userGroupC.Where(userGroupC.UserServiceUnitID == Session["ServiceUnitID"].ToString().Trim());
 
             ADefHelpDeskUsersQuery userQ = new ADefHelpDeskUsersQuery("u");
             ADefHelpDeskUsersCollection userC = new ADefHelpDeskUsersCollection();
-            userQ.Select(userQ.Username.As("UserID"), userQ.FirstName.As("UserName")).Where(userQ.Username.NotIn(userGroupC));
+            userQ.Select(userQ.Username.As("UserID"), userQ.FirstName.As("UserName")).Where(userQ.Username.NotIn(userGroupC)).OrderBy(userQ.FirstName.Ascending);
             DataTable dtU = new DataTable();
             dtU = userQ.LoadDataTable();
             storeUser.DataSource = dtU;

@@ -25,9 +25,12 @@
                                     <ext:ModelField Name="Status" Type="String" /> 
                                     <ext:ModelField Name="DueDate" Type="Date" />
                                     <ext:ModelField Name="CreatedDate" Type="Date" />
+                                    <ext:ModelField Name="ConfirmAsFinishDate" Type="Date" />
                                     <ext:ModelField Name="AssignedRoleID" Type="Int" />
                                     <ext:ModelField Name="Description" Type="String" />
                                     <ext:ModelField Name="RequesterName" Type="String" />
+                                    <ext:ModelField Name="RequesterEmail" Type="String" />
+                                    <ext:ModelField Name="RequesterPhone" Type="String" />
                                 </Fields>
                             </ext:Model>
                         </Model>
@@ -45,12 +48,20 @@
                                 <ext:ActionItem Icon="NoteDelete" Tooltip="Cancel Request" Handler="function(view,rowidx,colidx,item,e,record){#{DirectMethods}.grdTask_Cancel(record.data.TaskID)}" />
                             </Items>
                         </ext:ActionColumn>
+                        <ext:ActionColumn ID="acApprove" runat="server" Flex="1">
+                            <Items>
+                                <ext:ActionItem Icon="MedalGold1" Tooltip="Approve by PIC" Handler="function(view,rowidx,colidx,item,e,record){#{DirectMethods}.grdTask_ApproveByPic(record.data.TaskID)}" />
+                            </Items>
+                        </ext:ActionColumn>
                         <ext:Column runat="server" Text="TaskID" DataIndex="TaskID" Visible="true" Flex="2" />
                         <ext:Column runat="server" Text="Status" DataIndex="Status" Flex="3" />
                         <ext:DateColumn runat="server" Text="Deadline" DataIndex="DueDate" Flex="3" />
                         <ext:DateColumn runat="server" Text="Created Date" DataIndex="CreatedDate" Flex="3" />
+                        <ext:DateColumn runat="server" Text="Confirm Date" DataIndex="ConfirmAsFinishDate" Flex="3" />
                         <ext:Column runat="server" Text="Description" DataIndex="Description" Flex="11" />
-                        <ext:Column runat="server" Text="Request By" DataIndex="RequesterName" Flex="4" />
+                        <ext:Column runat="server" Text="Req. By" DataIndex="RequesterName" Flex="4" />
+                        <ext:Column runat="server" Text="Req. By Serv. Unit" DataIndex="RequesterName" Flex="4" />
+                        <ext:Column runat="server" Text="Req. For Serv. Unit" DataIndex="RequesterName" Flex="4" />
                     </Columns>
                 </ColumnModel>
                 <TopBar>                    

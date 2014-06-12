@@ -40,6 +40,15 @@ namespace Rscm.Kencana.Helpdesk.Task {
         protected global::Ext.Net.Store storeTask;
         
         /// <summary>
+        /// acApprove control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ActionColumn acApprove;
+        
+        /// <summary>
         /// btnNew control.
         /// </summary>
         /// <remarks>
