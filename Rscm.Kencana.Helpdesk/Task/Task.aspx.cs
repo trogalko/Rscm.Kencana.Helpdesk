@@ -178,6 +178,12 @@ namespace Rscm.Kencana.Helpdesk.Task
         }
 
         [DirectMethod]
+        public void storeNeedApproval_ReadData(object sender, StoreReadDataEventArgs e)
+        {
+
+        }
+
+        [DirectMethod]
         public void cmbStatus_Change()
         {
             X.Msg.Alert("Info", cmbStatus.SelectedItem.Value).Show();

@@ -99,6 +99,19 @@ namespace Rscm.Kencana.Helpdesk.User
             userQ.Select(userQ.Username.As("UserID"), userQ.FirstName.As("UserName")).Where(userQ.Username.NotIn(userGroupC)).OrderBy(userQ.FirstName.Ascending);
             DataTable dtU = new DataTable();
             dtU = userQ.LoadDataTable();
+
+            string UserID = string.Empty;
+            foreach (DataRow dr in dtU.Rows)
+            {
+                UserID = dr["UserID"].ToString();
+                ADefHelpDeskUserUserGroupQuery uQ = new ADefHelpDeskUserUserGroupQuery("a");
+                ADefHelpDeskUserUserGroupCollection uC = new ADefHelpDeskUserUserGroupCollection();
+                uQ.SelectAll().Where(uQ.UserID == UserID);
+                uC.Load(uQ);
+                if (uC.Count > 0)
+                    dr.Delete();
+            }
+            dtU.AcceptChanges();
             storeUser.DataSource = dtU;
             storeUser.DataBind();
 
@@ -112,6 +125,10 @@ namespace Rscm.Kencana.Helpdesk.User
             //userSelectedSU.Query.SelectAll().Where(userSelectedSU.Query.UserServiceUnitID == ServiceUnitID);
             //DataTable dtUSU = userSelectedSU.Query.LoadDataTable();
             DataTable dtUSU = usergroup.LoadDataTable();
+            //foreach (DataRow dr in dtUSU.Rows)
+            //{
+ 
+            //}
             storeUserOfServiceUnit.DataSource = dtUSU;
             storeUserOfServiceUnit.DataBind();
         }

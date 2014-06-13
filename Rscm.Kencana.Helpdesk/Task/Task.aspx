@@ -24,8 +24,7 @@
                         <Items>
                             <ext:GridPanel runat="server" ID="grdTask">
                                 <Store>
-                                    <ext:Store ID="storeTask" runat="server" RemoteSort="false" RemotePaging="false" AutoLoad="true" OnReadData="storeTask_ReadData" PageSize="100">
-                        
+                                    <ext:Store ID="storeTask" runat="server" RemoteSort="false" RemotePaging="false" AutoLoad="true" OnReadData="storeTask_ReadData" PageSize="100">                        
                                         <Model>
                                             <ext:Model runat="server" IDProperty="TaskID">
                                                 <Fields>
@@ -167,10 +166,72 @@
                     </ext:Panel>      
                     <ext:Panel runat="server" ID="PanelApprove" Title="Task(s) that require your Approval">
                         <Items>
-                            <ext:GridPanel runat="server" ID="grdNeedApproval">
+                            <ext:GridPanel runat="server" ID="grdNeedApproval">                                
                                 <Store>
-                                    <ext:Store ID="storeNeedApproval" runat="server" RemoteSort="false" RemotePaging="false" AutoLoad="true" OnReadData="storeTask_ReadData" PageSize="10">
+                                    <ext:Store ID="storeNeedApproval" runat="server" RemoteSort="false" RemotePaging="false" AutoLoad="true" OnReadData="storeNeedApproval_ReadData" PageSize="10">                        
+                                        <Model>
+                                            <ext:Model ID="ModelstoreNeedApproval" runat="server" IDProperty="TaskID">
+                                                <Fields>
+                                                    <ext:ModelField Name="TaskID" Type="Int" />
+                                                    <ext:ModelField Name="Status" Type="String" /> 
+                                                    <ext:ModelField Name="DueDate" Type="Date" />
+                                                    <ext:ModelField Name="CreatedDate" Type="Date" />
+                                                    <ext:ModelField Name="ConfirmAsFinishDate" Type="Date" />
+                                                    <ext:ModelField Name="AssignedRoleID" Type="Int" />
+                                                    <ext:ModelField Name="Description" Type="String" />
+                                                    <ext:ModelField Name="RequesterName" Type="String" />
+                                                    <ext:ModelField Name="RequesterEmail" Type="String" />
+                                                    <ext:ModelField Name="RequesterPhone" Type="String" />
+                                                </Fields>
+                                            </ext:Model>
+                                        </Model>
+                                        <Sorters>
+                                            <ext:DataSorter Property="TaskID" Direction="DESC" />
+                                        </Sorters>
+                                    </ext:Store>    
                                 </Store>
+                                <ColumnModel>
+                                    <Columns>                                        
+                                        <ext:ActionColumn ID="ActionColumn2" runat="server" Flex="1">
+                                            <Items>
+                                                <ext:ActionItem Icon="MedalGold1" Tooltip="Approve by Requestor" Handler="function(view,rowidx,colidx,item,e,record){#{DirectMethods}.grdTask_ApproveByPic(record.data.TaskID)}" />
+                                            </Items>
+                                        </ext:ActionColumn>
+                                        <ext:Column ID="Column1" runat="server" Text="TaskID" DataIndex="TaskID" Visible="true" Flex="2" />
+                                        <ext:Column ID="Column2" runat="server" Text="Status" DataIndex="Status" Flex="3" />
+                                        <ext:DateColumn ID="DateColumn1" runat="server" Text="Deadline" DataIndex="DueDate" Flex="3" />
+                                        <ext:DateColumn ID="DateColumn2" runat="server" Text="Created Date" DataIndex="CreatedDate" Flex="3" />
+                                        <ext:DateColumn ID="DateColumn3" runat="server" Text="Confirm Date" DataIndex="ConfirmAsFinishDate" Flex="3" />
+                                        <ext:Column ID="Column3" runat="server" Text="Description" DataIndex="Description" Flex="11" />
+                                        <ext:Column ID="Column4" runat="server" Text="Req. By" DataIndex="RequesterName" Flex="4" />
+                                        <ext:Column ID="Column5" runat="server" Text="Req. By Serv. Unit" DataIndex="RequesterName" Flex="4" />
+                                        <ext:Column ID="Column6" runat="server" Text="Req. For Serv. Unit" DataIndex="RequesterName" Flex="4" />
+                                    </Columns>
+                                </ColumnModel>                                               
+                                <MessageBusListeners>
+                                    <ext:MessageBusListener Name="grdTask_Refresh" Handler="this.getStore().reload();" />                    
+                                </MessageBusListeners>                
+                                <SelectionModel>
+                                    <ext:RowSelectionModel ID="RowSelectionModel2" runat="server" Mode="Single"> 
+                                        <Listeners>
+                                            <Select Delay="300" Handler="App.direct.grdTask_Select();" />                            
+                                        </Listeners>                
+                                    </ext:RowSelectionModel>                    
+                                </SelectionModel>
+                                <Features>
+                                    <ext:RowBody ID="RowBody2" runat="server">
+                                        <%--<GetAdditionalData 
+                                            Handler="return {rowBodyColspan : record.fields.getCount(), rowBody : '<p>' + data.TaskID + '</p>'};" />--%>
+                                    </ext:RowBody>
+                                </Features>          
+                                <BottomBar>
+                                    <ext:PagingToolbar ID="PagingToolbar2" 
+                                        runat="server"                      
+                                        DisplayInfo="true" 
+                                        DisplayMsg="Displaying Task {0} - {1} of {2}" 
+                                        EmptyMsg="No employees to display" 
+                                    />
+                                </BottomBar>
                             </ext:GridPanel>
                         </Items>
                     </ext:Panel>              

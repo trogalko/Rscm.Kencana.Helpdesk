@@ -26,7 +26,7 @@ namespace Rscm.Kencana.Helpdesk.Account
 
             bool result = UserLogin(userName, password);
             if ((result))
-            {
+            {               
                 e.Authenticated = true;                
             }
             else
@@ -49,7 +49,7 @@ namespace Rscm.Kencana.Helpdesk.Account
                     c.Load(q);
                     ADefHelpDeskUsers a = new ADefHelpDeskUsers();
                     if (c.Count == 0 )
-                    {                        
+                    {
                         a.Username = userName;
                         a.Password = _user.Password;
                         a.FirstName = _user.UserName;
@@ -57,6 +57,20 @@ namespace Rscm.Kencana.Helpdesk.Account
                         a.IsSuperUser = false;
                         a.Email = userName + "@rscmkencana.com";
                         a.Save();
+
+                        ADefHelpDeskUsersQuery aa = new ADefHelpDeskUsersQuery();
+                        ADefHelpDeskUsersCollection ac = new ADefHelpDeskUsersCollection();
+                        aa.SelectAll().Where(aa.Username == userName);
+                        ac.Load(aa);
+
+                        foreach (ADefHelpDeskUsers U in ac)
+                        {
+                            ADefHelpDeskUsers _u = new ADefHelpDeskUsers();
+                            _u.UserID = (int)U.UserID;
+                            _u.Username = userName;
+                            _u.FirstName = _user.UserName;
+                            AppSession.UserLogin = _u;
+                        }                        
                     }
                     if (c.Count == 1)
                     {
@@ -64,6 +78,12 @@ namespace Rscm.Kencana.Helpdesk.Account
                         {
                             if (a.LoadByPrimaryKey((int)U.UserID))
                             {
+                                ADefHelpDeskUsers _u = new ADefHelpDeskUsers();
+                                _u.UserID = (int)U.UserID;
+                                _u.Username = userName;
+                                _u.FirstName = _user.UserName;
+                                AppSession.UserLogin = _u;
+
                                 a.Username = userName;
                                 a.Password = _user.Password;
                                 a.FirstName = _user.UserName;
@@ -83,7 +103,7 @@ namespace Rscm.Kencana.Helpdesk.Account
                     {
                         foreach (ADefHelpDeskUserUserGroup ug in ugC)
                         {
-                            Session["ServiceUnitID"] = ug.UserServiceUnitID;
+                            Session["ServiceUnitID"] = ug.UserServiceUnitID;                            
                         }
                     }
                     else
