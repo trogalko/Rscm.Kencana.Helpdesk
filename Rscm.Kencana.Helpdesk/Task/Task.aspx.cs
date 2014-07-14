@@ -420,29 +420,32 @@ namespace Rscm.Kencana.Helpdesk.Task
         {
             if (string.IsNullOrEmpty(txtComment.Text.Trim()))
             {
-                X.Msg.Notify("Dire news indeed", "Your Excellency, Comment must not empty").Show();
+                X.Msg.Notify("Empty comment disallowed", "Comment must not empty").Show();
                 return;
             }            
             if (Session["TaskID"] == null)
             {
-                X.Msg.Notify("Dire news indeed", "Your Excellency, You must select a task above first").Show();
+                X.Msg.Notify("Select at least one task", "You must select a task above first").Show();
                 return;
             }
-            if (Session["UserID"] == null)
+            if (AppSession.UserLogin == null)
             {
-                X.Msg.Notify("Dire news indeed", "Your Excellency, Please do some re-login first").Show();
+                X.Msg.Notify("Session timeout", "Your Session has expired, Please do some re-login first").Show();
                 return;
             }
+            ADefHelpDeskUsers u = (ADefHelpDeskUsers)AppSession.UserLogin;
+            int UserID = (int)u.UserID;
             int TaskID = (int)Session["TaskID"];
             //int UserID = (int)Session["UserID"];
             ADefHelpDeskTaskDetails td = new ADefHelpDeskTaskDetails();
             td.TaskID = TaskID;
             td.DetailType = "Comment-Visible";
             td.InsertDate = DateTime.Now;
-            td.UserID = (int)Session["UserID"]; ;
+            //td.UserID = (int)Session["UserID"];
+            td.UserID = (int)u.UserID;
             td.Description = txtComment.Text.Trim();
             td.Save();
-            X.Msg.Notify("Excelent job my Liege", "Your Excellency, I am happy to inform You that your comment has been saved successfully").Show();
+            X.Msg.Notify("Excelent", "You, the RSCM Kencana best employee, just made the greatest and the wisest comment in the human history").Show();
             txtComment.Text = string.Empty;
             grdTask_Select();
         }
