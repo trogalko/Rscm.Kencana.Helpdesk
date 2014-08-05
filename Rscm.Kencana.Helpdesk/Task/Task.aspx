@@ -67,8 +67,8 @@
                                         <ext:DateColumn runat="server" Text="Confirm Date" DataIndex="ConfirmAsFinishDate" Flex="3" />
                                         <ext:Column runat="server" Text="Description" DataIndex="Description" Flex="11" />
                                         <ext:Column runat="server" Text="Req. By" DataIndex="RequesterName" Flex="4" />
-                                        <ext:Column runat="server" Text="Req. By Serv. Unit" DataIndex="RequesterName" Flex="4" />
-                                        <ext:Column runat="server" Text="Req. For Serv. Unit" DataIndex="RequesterName" Flex="4" />
+                                        <ext:Column runat="server" Text="Req. By Serv. Unit" DataIndex="RequesterEmail" Flex="4" />
+                                        <ext:Column runat="server" Text="Req. For Serv. Unit" DataIndex="RequesterPhone" Flex="4" />
                                     </Columns>
                                 </ColumnModel>
                                 <TopBar>                    
@@ -204,8 +204,8 @@
                                         <ext:DateColumn ID="DateColumn3" runat="server" Text="Confirm Date" DataIndex="ConfirmAsFinishDate" Flex="3" />
                                         <ext:Column ID="Column3" runat="server" Text="Description" DataIndex="Description" Flex="11" />
                                         <ext:Column ID="Column4" runat="server" Text="Req. By" DataIndex="RequesterName" Flex="4" />
-                                        <ext:Column ID="Column5" runat="server" Text="Req. By Serv. Unit" DataIndex="RequesterName" Flex="4" />
-                                        <ext:Column ID="Column6" runat="server" Text="Req. For Serv. Unit" DataIndex="RequesterName" Flex="4" />
+                                        <ext:Column ID="Column5" runat="server" Text="Req. By Serv. Unit" DataIndex="RequesterEmail" Flex="4" />
+                                        <ext:Column ID="Column6" runat="server" Text="Req. For Serv. Unit" DataIndex="RequesterPhone" Flex="4" />
                                     </Columns>
                                 </ColumnModel>                                               
                                 <MessageBusListeners>

@@ -53,7 +53,7 @@ namespace Rscm.Kencana.Helpdesk.Task
             //Password Ticket            
             string tikPass = Guid.NewGuid().ToString();
             t.TicketPassword = tikPass;
-            t.RequesterEmail = Session["ServiceUnitID"].ToString().Trim(); //RequesterEmail = the requestor service unit
+            t.RequesterEmail = AppSession.ServiceUnit.UserServiceUnitID; //RequesterEmail = the requestor service unit
             t.RequesterPhone = cmbServiceUnit.SelectedItem.Value; //RequesterPhone = the service unit which take charge of the request
             //Get username ID
             ADefHelpDeskUsersQuery uq = new ADefHelpDeskUsersQuery("a");

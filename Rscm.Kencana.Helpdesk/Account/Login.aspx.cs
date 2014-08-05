@@ -103,7 +103,8 @@ namespace Rscm.Kencana.Helpdesk.Account
                     {
                         foreach (ADefHelpDeskUserUserGroup ug in ugC)
                         {
-                            Session["ServiceUnitID"] = ug.UserServiceUnitID;                            
+                            Session["ServiceUnitID"] = ug.UserServiceUnitID;
+                            AppSession.ServiceUnit = ug;
                         }
                     }
                     else

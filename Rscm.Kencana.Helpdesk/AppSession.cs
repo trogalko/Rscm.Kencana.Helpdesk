@@ -27,5 +27,24 @@ namespace Rscm.Kencana.Helpdesk
             set
             { HttpContext.Current.Session["_UserLogin"] = value; }
         }
+
+        public static ADefHelpDeskUserUserGroup ServiceUnit
+        {
+            get
+            {
+                object obj = HttpContext.Current.Session["_ServiceUnit"];
+                if (obj == null)
+                {
+                    ADefHelpDeskUserUserGroup userG = new ADefHelpDeskUserUserGroup();
+                    userG.UserID = string.Empty;
+                    userG.UserServiceUnitID = string.Empty;
+                    HttpContext.Current.Session["_ServiceUnit"] = userG;
+                    return userG;
+                }
+                return (ADefHelpDeskUserUserGroup)obj;
+            }
+            set
+            { HttpContext.Current.Session["_ServiceUnit"] = value; }
+        }
     }
 }

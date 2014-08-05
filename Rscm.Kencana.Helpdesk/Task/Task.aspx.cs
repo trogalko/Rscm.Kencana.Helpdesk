@@ -53,6 +53,7 @@ namespace Rscm.Kencana.Helpdesk.Task
                     this.cmbStatus.SetRawValue("New");
                     StoreReadDataEventArgs ee = new StoreReadDataEventArgs();
                     storeTask_ReadData(sender,ee);
+                    storeNeedApproval_ReadData(sender, ee);
             }
         }
 
@@ -80,7 +81,7 @@ namespace Rscm.Kencana.Helpdesk.Task
         {
             if (string.IsNullOrEmpty(cmbStatus.SelectedItem.Value))
                 return;
-            if (Session["ServiceUnitID"] == null)
+            if (AppSession.ServiceUnit.UserServiceUnitID == null)
                 return;
 
             ADefHelpDeskTasksQuery t = new ADefHelpDeskTasksQuery("a");
@@ -99,7 +100,7 @@ namespace Rscm.Kencana.Helpdesk.Task
             //|| t.Description.Like("%" + txtSearch.Text + "%") || (t.RequesterEmail == Session["ServiceUnit"].ToString() | t.RequesterPhone == Session["ServiceUnit"].ToString()));
             if (Session["ServiceUnitID"] != null)
             {
-                if (!(Session["ServiceUnitID"].ToString() == "HIT" || Session["ServiceUnitID"].ToString() == "IT"))
+                if (!(AppSession.ServiceUnit.UserServiceUnitID == "HIT" || Session["ServiceUnitID"].ToString() == "IT"))
                 {
                     t.Where(t.Status.Like("%" + cmbStatus.SelectedItem.Value + "%") && t.Description.Like("%" + txtSearch.Text + "%") && (t.RequesterEmail == Session["ServiceUnitID"].ToString() | t.RequesterPhone == Session["ServiceUnitID"].ToString()));
                 }
@@ -180,7 +181,26 @@ namespace Rscm.Kencana.Helpdesk.Task
         [DirectMethod]
         public void storeNeedApproval_ReadData(object sender, StoreReadDataEventArgs e)
         {
+            ADefHelpDeskTasksQuery t = new ADefHelpDeskTasksQuery("a");
+            ADefHelpDeskTaskDetailsQuery tD = new ADefHelpDeskTaskDetailsQuery("b");
+            ADefHelpDeskUsersQuery u = new ADefHelpDeskUsersQuery("c");
+            t.Select(t.TaskID, t.Status, t.DueDate, t.CreatedDate, t.ConfirmAsFinishDate, t.AssignedRoleID, t.Description, t.RequesterUserID, t.RequesterName, t.RequesterEmail, t.RequesterPhone);
+            t.Where(t.Status == "Resolved",t.ApprovedByRequestorID.IsNull());
 
+            //RequesterEmail = Service unit peminta
+            //RequesterPhone = Service unit tujuan
+            if (AppSession.ServiceUnit.UserServiceUnitID != null)
+            {
+                //if (!(AppSession.ServiceUnit.UserServiceUnitID == "HIT" || AppSession.ServiceUnit.UserServiceUnitID == "IT"))
+                //{
+                    t.Where(t.RequesterEmail == AppSession.ServiceUnit.UserServiceUnitID);
+                //}                
+            }
+            
+            t.es.Distinct = true;            
+            DataTable dTask = t.LoadDataTable();
+            storeNeedApproval.DataSource = dTask;
+            storeNeedApproval.DataBind();
         }
 
         [DirectMethod]
@@ -194,6 +214,8 @@ namespace Rscm.Kencana.Helpdesk.Task
             ADefHelpDeskTasksQuery t = new ADefHelpDeskTasksQuery("a");
             ADefHelpDeskTaskDetailsQuery tD = new ADefHelpDeskTaskDetailsQuery("b");
             ADefHelpDeskUsersQuery u = new ADefHelpDeskUsersQuery("c");
+            t.InnerJoin(tD).On(t.TaskID == tD.TaskID);
+            t.InnerJoin(u).On(t.RequesterUserID == u.UserID);
             t.Select(t.TaskID, t.Status, t.DueDate, t.CreatedDate,t.ConfirmAsFinishDate, t.AssignedRoleID, t.Description, t.RequesterUserID, t.RequesterName, t.RequesterEmail,t.RequesterPhone,
                 tD.DetailID, tD.DetailType, tD.UserID, tD.InsertDate, tD.Description.As("Comment"), tD.StartTime, tD.StopTime, u.Username);
             t.InnerJoin(tD).On(t.TaskID == tD.TaskID);
@@ -431,6 +453,9 @@ namespace Rscm.Kencana.Helpdesk.Task
             if (AppSession.UserLogin == null)
             {
                 X.Msg.Notify("Session timeout", "Your Session has expired, Please do some re-login first").Show();
+                Session.Abandon();
+                Session.RemoveAll();
+                FormsAuthentication.SignOut();
                 return;
             }
             ADefHelpDeskUsers u = (ADefHelpDeskUsers)AppSession.UserLogin;
@@ -445,7 +470,7 @@ namespace Rscm.Kencana.Helpdesk.Task
             td.UserID = (int)u.UserID;
             td.Description = txtComment.Text.Trim();
             td.Save();
-            X.Msg.Notify("Excelent", "You, the RSCM Kencana best employee, just made the greatest and the wisest comment in the human history").Show();
+            X.Msg.Notify("Excelent. You, as the RSCM Kencana best employee", "Just made the greatest and the wisest comment in the human history").Show();
             txtComment.Text = string.Empty;
             grdTask_Select();
         }
