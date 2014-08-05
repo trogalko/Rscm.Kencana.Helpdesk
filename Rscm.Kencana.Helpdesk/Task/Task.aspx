@@ -55,7 +55,7 @@
                                                 <ext:ActionItem Icon="NoteDelete" Tooltip="Cancel Request" Handler="function(view,rowidx,colidx,item,e,record){#{DirectMethods}.grdTask_Cancel(record.data.TaskID)}" />
                                             </Items>
                                         </ext:ActionColumn>
-                                        <ext:ActionColumn ID="acApprove" runat="server" Flex="1">
+                                        <ext:ActionColumn ID="acApprove" runat="server" Flex="1" Visible="false">
                                             <Items>
                                                 <ext:ActionItem Icon="MedalGold1" Tooltip="Approve by PIC" Handler="function(view,rowidx,colidx,item,e,record){#{DirectMethods}.grdTask_ApproveByPic(record.data.TaskID)}" />
                                             </Items>

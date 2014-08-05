@@ -98,11 +98,11 @@ namespace Rscm.Kencana.Helpdesk.Task
                 t.Where(t.Description.Like("%" + txtSearch.Text + "%"));
             }
             //|| t.Description.Like("%" + txtSearch.Text + "%") || (t.RequesterEmail == Session["ServiceUnit"].ToString() | t.RequesterPhone == Session["ServiceUnit"].ToString()));
-            if (Session["ServiceUnitID"] != null)
+            if (AppSession.ServiceUnit.UserServiceUnitID != null)
             {
-                if (!(AppSession.ServiceUnit.UserServiceUnitID == "HIT" || Session["ServiceUnitID"].ToString() == "IT"))
+                if (!(AppSession.ServiceUnit.UserServiceUnitID == "HIT" || AppSession.ServiceUnit.UserServiceUnitID == "IT"))
                 {
-                    t.Where(t.Status.Like("%" + cmbStatus.SelectedItem.Value + "%") && t.Description.Like("%" + txtSearch.Text + "%") && (t.RequesterEmail == Session["ServiceUnitID"].ToString() | t.RequesterPhone == Session["ServiceUnitID"].ToString()));
+                    t.Where(t.Status.Like("%" + cmbStatus.SelectedItem.Value + "%") && t.Description.Like("%" + txtSearch.Text + "%") && (t.RequesterEmail == Session["ServiceUnitID"].ToString() | t.RequesterPhone == AppSession.ServiceUnit.UserServiceUnitID));
                 }
                 else
                 {
@@ -158,11 +158,11 @@ namespace Rscm.Kencana.Helpdesk.Task
             t.Select(t.TaskID, t.Status, t.DueDate, t.CreatedDate,t.ConfirmAsFinishDate, t.AssignedRoleID, t.Description, t.RequesterUserID, t.RequesterName, t.RequesterEmail,t.RequesterPhone);
                 //tD.DetailID,tD.DetailType,tD.UserID,tD.InsertDate,tD.Description.As("Comment"),tD.StartTime,tD.StopTime,u.Username);
             //t.RightJoin(tD).On(t.TaskID == tD.TaskID);
-            if (Session["ServiceUnitID"] != null)
+            if (AppSession.ServiceUnit.UserServiceUnitID != null)
             {
-                if (!(Session["ServiceUnitID"].ToString() == "HIT" || Session["ServiceUnitID"].ToString() == "IT"))
+                if (!(AppSession.ServiceUnit.UserServiceUnitID == "HIT" || AppSession.ServiceUnit.UserServiceUnitID == "IT"))
                 {
-                    t.Where(t.RequesterEmail == Session["ServiceUnitID"].ToString() | t.RequesterPhone == Session["ServiceUnitID"].ToString());
+                    t.Where(t.RequesterEmail == AppSession.ServiceUnit.UserServiceUnitID | t.RequesterPhone == AppSession.ServiceUnit.UserServiceUnitID);
                 }
                 if (!X.IsAjaxRequest)
                 {
@@ -265,7 +265,7 @@ namespace Rscm.Kencana.Helpdesk.Task
                     X.Msg.Notify("Info", "Unable to mark as finished, either task already confirmed or cancelled").Show();
                     return;
                 }
-                if (Session["ServiceUnitID"].ToString() == "HIT" || Session["ServiceUnitID"].ToString() == "IT" || Session["ServiceUnitID"].ToString() == t.RequesterPhone)
+                if (AppSession.ServiceUnit.UserServiceUnitID == "HIT" || AppSession.ServiceUnit.UserServiceUnitID == "IT" || AppSession.ServiceUnit.UserServiceUnitID == t.RequesterPhone)
                 {
                     Session["TaskID"] = taskID;
                     X.Msg.Show(new MessageBoxConfig
@@ -350,7 +350,7 @@ namespace Rscm.Kencana.Helpdesk.Task
             {
                 if (t.LoadByPrimaryKey(taskID))
                 {
-                    if (Session["ServiceUnitID"].ToString() == "HIT" || Session["ServiceUnitID"].ToString() == "IT" || Session["ServiceUnitID"].ToString() == t.RequesterPhone)
+                    if (AppSession.ServiceUnit.UserServiceUnitID == "HIT" || AppSession.ServiceUnit.UserServiceUnitID == "IT" || AppSession.ServiceUnit.UserServiceUnitID == t.RequesterPhone)
                     {
                         if (t.Status == "Resolved")
                         {
@@ -390,9 +390,52 @@ namespace Rscm.Kencana.Helpdesk.Task
             {
                 if (t.LoadByPrimaryKey(taskID))
                 {
-
+                    Session["TaskID"] = taskID;
+                    X.Msg.Show(new MessageBoxConfig
+                    {
+                        Title = "Confirm?",
+                        Message = "You agree to declare that this task has been done completely ?",
+                        Buttons = MessageBox.Button.YESNO,
+                        MessageBoxButtonsConfig = new MessageBoxButtonsConfig
+                        {
+                            Yes = new MessageBoxButtonConfig
+                            {
+                                Text = "Yes",
+                                Handler = "App.direct.PicConfirmAsFinished()"
+                            },
+                            No = new MessageBoxButtonConfig
+                            {
+                                Text = "No",
+                                Handler = "App.direct.PicCancelConfirmAsFinished()"
+                            }
+                        },
+                        AnimEl = this.grdTask.ClientID,
+                        Icon = MessageBox.Icon.QUESTION
+                    });
                 }
             }
+        }
+
+        [DirectMethod]
+        public void PicConfirmAsFinished()
+        {
+            int taskID = (int)Session["TaskID"];
+            ADefHelpDeskTasks t = new ADefHelpDeskTasks();
+            if (t.LoadByPrimaryKey(taskID))
+            {
+                t.ApprovedByRequestorID = AppSession.UserLogin.UserID;
+                t.ApprovedByRequestorDateTime = DateTime.Now;
+                t.Save();
+                X.Msg.Notify("Success", "PIC successfully confirms the task as finished completely").Show();
+                //Refresh GridPanel
+                MessageBus.Default.Publish("grdTask_Refresh");
+            }
+        }
+
+        [DirectMethod]
+        public void PicCancelConfirmAsFinished()
+        {            
+            return;
         }
 
         [DirectMethod]
