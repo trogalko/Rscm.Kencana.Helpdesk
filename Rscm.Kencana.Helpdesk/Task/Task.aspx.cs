@@ -128,6 +128,16 @@ namespace Rscm.Kencana.Helpdesk.Task
         [DirectMethod]
         public void btnNew_Click()
         {
+            ADefHelpDeskTasksQuery tq = new ADefHelpDeskTasksQuery("tq");
+            ADefHelpDeskTasksCollection tc = new ADefHelpDeskTasksCollection();
+            tq.SelectAll().Where(tq.RequesterEmail == AppSession.ServiceUnit.UserServiceUnitID, tq.Status == "Resolved", tq.ApprovedByRequestorID.IsNull());
+            tc.Load(tq);
+            if (tc.Count > 2)
+            {
+                X.Msg.Alert("Approve needed", "You have finished tasks that required your approval").Show();
+                return;
+            }
+
             Window winNew = new Window
             {
                 ID = "winNew",
