@@ -207,7 +207,18 @@
                                         <ext:Column ID="Column5" runat="server" Text="Req. By Serv. Unit" DataIndex="RequesterEmail" Flex="4" />
                                         <ext:Column ID="Column6" runat="server" Text="Req. For Serv. Unit" DataIndex="RequesterPhone" Flex="4" />
                                     </Columns>
-                                </ColumnModel>                                               
+                                </ColumnModel>  
+                                <TopBar>
+                                    <ext:DesktopTaskBar>
+                                        <Items>
+                                            <ext:Button ID="btnConfirmAll" Icon="AwardStarGold1" Text="Confirm All at Once" runat="server">
+                                                <Listeners>
+                                                    <Click Handler="App.direct.btnConfirmAll_Click();" />                                    
+                                                </Listeners>
+                                            </ext:Button>
+                                        </Items>
+                                    </ext:DesktopTaskBar>
+                                </TopBar>                                             
                                 <MessageBusListeners>
                                     <ext:MessageBusListener Name="grdTask_Refresh" Handler="this.getStore().reload();" />                    
                                 </MessageBusListeners>                

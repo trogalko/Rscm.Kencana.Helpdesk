@@ -443,6 +443,65 @@ namespace Rscm.Kencana.Helpdesk.Task
         }
 
         [DirectMethod]
+        public void btnConfirmAll_Click()
+        {            
+            X.Msg.Show(new MessageBoxConfig
+            {
+                Title = "Confirm All Mate?",
+                Message = "Do You want to confirm all tasks as finish mate ?",
+                Buttons = MessageBox.Button.YESNO,
+                MessageBoxButtonsConfig = new MessageBoxButtonsConfig
+                {
+                    Yes = new MessageBoxButtonConfig
+                    {
+                        Text = "Yes",
+                        Handler = "App.direct.btnConfirmAlls_Click()"
+                    },
+                    No = new MessageBoxButtonConfig
+                    {
+                        Text = "No",
+                        Handler = "App.direct.PicCancelConfirmAsFinished()"
+                    }
+                },
+                AnimEl = this.grdTask.ClientID,
+                Icon = MessageBox.Icon.QUESTION
+            });
+               
+        }
+
+        [DirectMethod]
+        public void btnConfirmAlls_Click()
+        {
+            string messagesuccess = string.Empty;
+            if (AppSession.UserLogin.UserID == 36)
+                messagesuccess = "Her Majesty Santi Dwiyanti S.Si, Apt, the pride of RSCM Kencana, has successfully confirms all tasks as finished completely ";
+            else
+                messagesuccess = "PIC successfully confirms all tasks as finished completely";
+            ADefHelpDeskTasksQuery tQ = new ADefHelpDeskTasksQuery("a");
+            ADefHelpDeskTasksCollection tC = new ADefHelpDeskTasksCollection();
+            tQ.SelectAll().Where(tQ.ApprovedByRequestorID.IsNull(),tQ.ApprovedByRequestorDateTime.IsNull(),tQ.Status == "Resolved");
+            if (AppSession.ServiceUnit.UserServiceUnitID != null)                           
+                tQ.Where(tQ.RequesterEmail == AppSession.ServiceUnit.UserServiceUnitID);
+            tC.Load(tQ);
+            if (tC.Count > 0)
+            {
+                foreach (var t in tC)
+                {
+                    ADefHelpDeskTasks at = new ADefHelpDeskTasks();
+                    if (at.LoadByPrimaryKey((int)t.TaskID))
+                    {
+                        at.ApprovedByRequestorID = AppSession.UserLogin.UserID;
+                        at.ApprovedByRequestorDateTime = DateTime.Now;
+                        at.Save();
+                        X.Msg.Notify("Success", messagesuccess).Show();
+                        //Refresh GridPanel
+                        MessageBus.Default.Publish("grdTask_Refresh");
+                    }
+                }
+            }
+        }
+
+        [DirectMethod]
         public void PicCancelConfirmAsFinished()
         {            
             return;

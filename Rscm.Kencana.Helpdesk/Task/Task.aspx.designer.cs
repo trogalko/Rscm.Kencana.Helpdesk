@@ -319,6 +319,15 @@ namespace Rscm.Kencana.Helpdesk.Task {
         protected global::Ext.Net.Column Column6;
         
         /// <summary>
+        /// btnConfirmAll control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button btnConfirmAll;
+        
+        /// <summary>
         /// RowSelectionModel2 control.
         /// </summary>
         /// <remarks>
